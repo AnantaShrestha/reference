@@ -1,0 +1,140 @@
+/** chat box **/
+.chat-room-wrapper{
+	position: relative;
+	display: flex;
+	height:80vh;
+	.chat-row-message-wrapper{
+		width: calc(100% - 299px);
+		position:relative;
+		.not-chat-selected {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100%;
+			h2{
+				font-size:24px;
+				color:#ddd;
+			}
+		}
+		.chat-person {
+			background: var(--themecolor);
+			padding: 5px 10px;
+			border-top-left-radius: 15px;
+			h2{
+				font-size: 18px;
+				color:var(--white);
+			}
+		}
+		.chat-person-form {
+			position: absolute;
+			bottom: 15px;
+			width:100%;
+			.chat-person-form-wrapper{
+				position: relative;
+				padding: 8px 10px;
+				display: flex;
+				border: 1px solid #ddd;
+				border-radius: 30px;
+				margin: 0px 20px;
+				align-items:center;
+				&.invalid{
+					border-color: red;
+				}
+				.message-box {
+					width: 100%;
+					border-radius: 30px;
+					border:0;
+					padding: 0px;
+					outline:none;
+					resize:none;
+					font-size: 14px;
+					text-indent: 10px;
+					background: none;
+					font-size: 14px;
+					&:placeholder{
+						font-size:14px;
+					}
+				}
+				.message-action-btn {
+					height: 100%;
+					background: none;
+					border: 0;
+					font-size: 18px;
+					color: var(--primaryButton);
+					z-index: 11;
+				}
+			}
+		}
+	}
+	.chat-row-list-wrapper{
+		position: absolute;
+		right: 0;
+		top: 0;
+		border-left: 1px solid #ddd;
+		width: 300px;
+		height: 100%;
+		background: var(--white);
+		border-top-right-radius: 15px;
+		.chat-list-items{
+			.chat-heading{
+				padding: 10px;
+				h2{
+					font-size: 18px;
+					color: #a09d9d;
+					font-weight: 400;
+				}
+			}
+			.chat-user-list{
+				.chat-user-item {
+					display: flex;
+					column-gap: 15px;
+					cursor: pointer;
+					align-items:center;
+					padding:8px 10px;
+					&:hover{
+						background: #f5f5f5;
+					}
+					&:last-child{
+						margin-bottom:0px;
+					}
+					.chat-user-image{
+						position: relative;
+						span {
+							background: #3498db;
+							height: 35px;
+							width: 35px;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							border-radius: 50%;
+							font-size: 14px;
+							color:var(--white);
+						}
+						.chat-online-status{
+							position: absolute;
+							bottom: 1px;
+							right: 2px;
+							width: 9px;
+							height: 9px;
+							border-radius: 50%;
+							background: #ccc;
+							&.green{
+								background: #00A400;
+							}
+
+						}
+					}
+					.chat-user-name{
+						span{
+							font-size:16px;
+
+						}
+					}
+				}
+			}
+		}
+		
+	}
+}
+
+/** end of chat box **/
