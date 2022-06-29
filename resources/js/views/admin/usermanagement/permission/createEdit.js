@@ -3,8 +3,7 @@ import {isEmpty} from 'lodash'
 import {Link,useParams} from "react-router-dom";
 import {useSelector,useDispatch} from 'react-redux'
 import { useNavigate } from "react-router";
-import {Form,Button,TextField,CheckBox} from '@/components/Form'
-import useForm from '@/components/Form/hooks/useForm'
+import {Form,Button,TextField,CheckBox,useForm} from '@/components/Form'
 import {PermissionRouteListAction,PermissionCreateAction,PermissionEditAction,PermissionUpdateAction} from '@/services/redux/usermanagement/permission/PermissionAction'
 const PermissionForm = () =>{
 	//ref

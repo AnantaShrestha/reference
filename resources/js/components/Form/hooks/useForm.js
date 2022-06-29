@@ -7,7 +7,6 @@ const useForm = () =>{
 	}
 	//setFields
 	const setFieldsValue = (form,fields)=>{
-		console.log(fields)
 		Object.entries(fields)?.map(([key,value],i)=>{
 			if(key){
 				if(typeof value =='object'){
@@ -26,6 +25,9 @@ const useForm = () =>{
 				}
 			}
 		})
+	}
+	const getFieldValue = (form,field) =>{
+
 	}
 	//get attribute
 	const getAttributeName = (element) =>{

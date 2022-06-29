@@ -3,8 +3,7 @@ import {isEmpty} from 'lodash'
 import {Link,useParams} from "react-router-dom";
 import {useSelector,useDispatch} from 'react-redux'
 import { useNavigate } from "react-router";
-import {Form,Button,TextField,CheckBox} from '@/components/Form'
-import useForm from '@/components/Form/hooks/useForm'
+import {Form,Button,TextField,CheckBox,Select,useForm} from '@/components/Form'
 const RoleForm = () =>{
 	//ref
 	const form = useRef(null)
@@ -50,6 +49,13 @@ const RoleForm = () =>{
 						name="name" 
 						placeholder="Role Name"
 					/>
+					<Select
+						name='permission_id'
+						className = 'form-control'
+						label="Permisions"
+						placeholder="Permission"
+					/>
+					
 					<div className="form-group">
 						<div className="form-label"></div>
 						<div className="form-input form-action">

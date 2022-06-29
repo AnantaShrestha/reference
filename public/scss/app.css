@@ -607,12 +607,15 @@ ul, ol {
 }
 .form-wrapper.form .form-group .form-input input::-moz-placeholder {
   font-size: 14px;
+  color: #ccc;
 }
 .form-wrapper.form .form-group .form-input input:-ms-input-placeholder {
   font-size: 14px;
+  color: #ccc;
 }
 .form-wrapper.form .form-group .form-input input::placeholder {
   font-size: 14px;
+  color: #ccc;
 }
 .form-wrapper.form .form-group .form-input input.invalid {
   border: 1px solid red;
@@ -705,6 +708,28 @@ ul, ol {
   text-transform: capitalize;
   margin-top: 4px;
   display: block;
+}
+
+.selection-wrapper {
+  position: relative;
+}
+.selection-wrapper .selected-items-wrapper .selected-items {
+  width: 100%;
+  height: 40px;
+  border-radius: 4px;
+  text-indent: 7px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 14px;
+  padding: 0px;
+}
+.selection-wrapper .selected-items-wrapper .selected-items .select-placeholder {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.selection-wrapper .selected-items-wrapper .selected-items .select-placeholder span {
+  color: #ccc;
 }
 
 /** chat box **/

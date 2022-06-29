@@ -31,6 +31,7 @@
 				padding:0px;
 				&::placeholder{
 					font-size:14px;
+					color:#ccc;
 				}
 				&.invalid{
 					border:1px solid red;
@@ -137,3 +138,28 @@
 		display: block;
 	}
 }
+.selection-wrapper{
+	position:relative;
+	.selected-items-wrapper{
+		.selected-items{
+			width: 100%;
+			height: 40px;
+			border-radius: 4px;
+			text-indent: 7px;
+			border: 1px solid #ccc;
+			outline: none;
+			font-size: 14px;
+			padding: 0px;
+			.select-placeholder{
+				display:flex;
+				align-items: center;
+				height:100%;
+				span{
+					color:#ccc;
+				}
+			}
+		}
+	}
+}
+
+//responsive
