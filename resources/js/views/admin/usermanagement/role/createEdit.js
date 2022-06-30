@@ -26,9 +26,11 @@ const RoleForm = () =>{
 	useEffect(()=>{
 		dispatch(PermissionListAction({page:currentPage,perPage:perPage,search:search}))
 	},[])
+
 	const roleForm = (values) =>{
 		console.log(values)
 	}
+	
 	return(
 		<div className="content-body">
 			<div className="page-heading-wrapper">

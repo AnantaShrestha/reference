@@ -19,10 +19,12 @@ const PermissionForm = () =>{
 	const isAddMode = id ? false : true
 	//selector
 	const {permissionRouteList,permission,permissionFormLoadingResponse} =useSelector((state) => state.permissionState)
+
 	useEffect(()=>{
 		dispatch(PermissionRouteListAction())
 		if(!isAddMode) dispatch(PermissionEditAction(id))
 	},[])
+
 	useEffect(()=>{
 		let accessUri =permission?.access_uri
 		if(!isAddMode)
@@ -31,10 +33,12 @@ const PermissionForm = () =>{
 				'access_uri' : accessUri?.split(',')
 			})
 	},[permission])
+
 	const permissionForm = (values) =>{
 		if(isAddMode) dispatch(PermissionCreateAction(values,navigate))
 		else dispatch(PermissionUpdateAction(values,id,navigate))
 	}
+	
 	return(
 		<div className="content-body">
 			<div className="page-heading-wrapper">

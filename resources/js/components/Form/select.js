@@ -32,7 +32,7 @@ const Select = ({
 			})
 		}
 	}
-	console.log(checkedValues)
+	
 	const handleSelection = (e) => {
 		let checkedStatus = e.target.checked
 		let value = e.target.parentNode.querySelector('label').innerHTML
