@@ -731,6 +731,58 @@ ul, ol {
 .selection-wrapper .selected-items-wrapper .selected-items .select-placeholder span {
   color: #ccc;
 }
+.selection-wrapper .selected-items-wrapper .selected-items .select-placeholder .selected-values {
+  display: flex;
+  row-gap: 5px;
+  -moz-column-gap: 5px;
+       column-gap: 5px;
+  padding: 0px 7px;
+  width: 100%;
+  flex-flow: row wrap;
+}
+.selection-wrapper .selected-items-wrapper .selected-items .select-placeholder .selected-values .select-value {
+  background: var(--themecolor);
+  padding: 3px 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+}
+.selection-wrapper .selected-items-wrapper .selected-items .select-placeholder .selected-values .select-value span {
+  font-size: 12px;
+  color: var(--white);
+  display: flex;
+}
+.selection-wrapper .selected-items-wrapper .selected-items .select-placeholder .selected-values .select-value .remove-select {
+  font-size: 14px;
+  color: var(--white);
+  cursor: pointer;
+}
+.selection-wrapper .selected-options {
+  background: #fff;
+  box-shadow: 0px 0px 5px -2px rgba(0, 0, 0, 0.4);
+  display: none;
+}
+.selection-wrapper .selected-options.active {
+  display: block;
+}
+.selection-wrapper .selected-options .option-wrapper .option-item {
+  font-size: 14px;
+}
+.selection-wrapper .selected-options .option-wrapper .option-item input {
+  display: none;
+}
+.selection-wrapper .selected-options .option-wrapper .option-item input:checked + label {
+  background: #ddd !important;
+}
+.selection-wrapper .selected-options .option-wrapper .option-item label {
+  display: block;
+  line-height: 40px;
+  padding: 0px 20px;
+}
+.selection-wrapper .selected-options .option-wrapper .option-item label:hover {
+  background: #ddd;
+}
 
 /** chat box **/
 .chat-room-wrapper {

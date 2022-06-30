@@ -1,9 +1,10 @@
-import React,{useEffect,useRef} from 'react'
+import React,{useEffect,useState,useRef} from 'react'
 import {isEmpty} from 'lodash'
 import {Link,useParams} from "react-router-dom";
 import {useSelector,useDispatch} from 'react-redux'
 import { useNavigate } from "react-router";
 import {Form,Button,TextField,CheckBox,Select,useForm} from '@/components/Form'
+import {PermissionListAction} from '@/services/redux/usermanagement/permission/PermissionAction'
 const RoleForm = () =>{
 	//ref
 	const form = useRef(null)
@@ -16,9 +17,17 @@ const RoleForm = () =>{
 	const {id}=useParams()
 	//form mode
 	const isAddMode = id ? false : true
+	const [currentPage,setCurrentPage] = useState(1)
+	const [search,setSearch] = useState('')
+	//selector
+	const {permissionList,permissionListLoadingResponse } =useSelector((state) => state.permissionState)
+	const perPage = 10
 
+	useEffect(()=>{
+		dispatch(PermissionListAction({page:currentPage,perPage:perPage,search:search}))
+	},[])
 	const roleForm = (values) =>{
-		
+		console.log(values)
 	}
 	return(
 		<div className="content-body">
@@ -40,7 +49,7 @@ const RoleForm = () =>{
 							{
 								name:'name',
 								rules:'required'
-							},		  
+							},	
 						]}
 				>
 					<TextField 
@@ -50,12 +59,15 @@ const RoleForm = () =>{
 						placeholder="Role Name"
 					/>
 					<Select
+						multiple={true}
 						name='permission_id'
 						className = 'form-control'
 						label="Permisions"
 						placeholder="Permission"
+						optionValue = 'id'
+						optionLabel ='name'
+						options ={permissionList}
 					/>
-					
 					<div className="form-group">
 						<div className="form-label"></div>
 						<div className="form-input form-action">
