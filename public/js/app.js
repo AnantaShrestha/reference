@@ -2634,6 +2634,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -2659,6 +2661,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var Select = function Select(_ref) {
   var label = _ref.label,
       multiple = _ref.multiple,
@@ -2669,7 +2672,9 @@ var Select = function Select(_ref) {
       name = _ref.name,
       options = _ref.options,
       optionValue = _ref.optionValue,
-      optionLabel = _ref.optionLabel;
+      optionLabel = _ref.optionLabel,
+      searchAllow = _ref.searchAllow,
+      handleSearch = _ref.handleSearch;
   var selectWrapper = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
@@ -2701,8 +2706,6 @@ var Select = function Select(_ref) {
       });
     }
   };
-
-  console.log(checkedValues);
 
   var handleSelection = function handleSelection(e) {
     var checkedStatus = e.target.checked;
@@ -2758,9 +2761,17 @@ var Select = function Select(_ref) {
               })]
             })
           })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
           className: "selected-options ".concat(showOption ? 'active' : ''),
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("ul", {
+          children: [searchAllow && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+            className: "select-option-search",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+              type: "text",
+              className: "search-input",
+              autoComplete: "off",
+              onChange: handleSearch
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("ul", {
             className: "option-wrapper",
             onClick: handleSelection,
             ref: selectWrapper,
@@ -2778,13 +2789,32 @@ var Select = function Select(_ref) {
                 })]
               }, i);
             }))
-          })
+          })]
         })]
       })
     })]
   });
 };
 
+Select.propTypes = {
+  id: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
+  label: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
+  labelClassName: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
+  wrapperClassName: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
+  placeholder: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
+  name: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
+  optionValue: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
+  optionLabel: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
+  options: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().array),
+  onChange: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
+  searchAllow: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
+  handleSearch: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func)
+};
+Select.defaultProps = {
+  className: '',
+  children: '',
+  controller: undefined
+};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Select);
 
 /***/ }),
@@ -4816,8 +4846,7 @@ var RoleForm = function RoleForm() {
   var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(function (state) {
     return state.permissionState;
   }),
-      permissionList = _useSelector.permissionList,
-      permissionListLoadingResponse = _useSelector.permissionListLoadingResponse;
+      permissionList = _useSelector.permissionList;
 
   var perPage = 10;
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
@@ -4827,6 +4856,10 @@ var RoleForm = function RoleForm() {
       search: search
     }));
   }, []);
+
+  var searchOption = function searchOption(value) {
+    console.log(value);
+  };
 
   var roleForm = function roleForm(values) {
     console.log(values);
@@ -4873,7 +4906,8 @@ var RoleForm = function RoleForm() {
           placeholder: "Permission",
           optionValue: "id",
           optionLabel: "name",
-          options: permissionList
+          options: permissionList,
+          searchAllow: true
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
           className: "form-group",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {

@@ -20,12 +20,16 @@ const RoleForm = () =>{
 	const [currentPage,setCurrentPage] = useState(1)
 	const [search,setSearch] = useState('')
 	//selector
-	const {permissionList,permissionListLoadingResponse } =useSelector((state) => state.permissionState)
+	const {permissionList } =useSelector((state) => state.permissionState)
 	const perPage = 10
 
 	useEffect(()=>{
 		dispatch(PermissionListAction({page:currentPage,perPage:perPage,search:search}))
 	},[])
+
+	const searchOption = (value) =>{
+		console.log(value)
+	}
 
 	const roleForm = (values) =>{
 		console.log(values)
@@ -69,6 +73,8 @@ const RoleForm = () =>{
 						optionValue = 'id'
 						optionLabel ='name'
 						options ={permissionList}
+						searchAllow = {true}
+						
 					/>
 					<div className="form-group">
 						<div className="form-label"></div>

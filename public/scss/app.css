@@ -766,6 +766,13 @@ ul, ol {
 .selection-wrapper .selected-options.active {
   display: block;
 }
+.selection-wrapper .selected-options .select-option-search {
+  padding: 5px 8px;
+}
+.selection-wrapper .selected-options .select-option-search input {
+  height: 30px;
+  outline: none;
+}
 .selection-wrapper .selected-options .option-wrapper .option-item {
   font-size: 14px;
 }

@@ -193,6 +193,13 @@
 		&.active{
 			display: block;
 		}
+		.select-option-search{
+			padding: 5px 8px;
+			input{
+				height:30px;
+				outline: none;
+			}
+		}
 		.option-wrapper{
 			.option-item{
 				font-size: 14px;

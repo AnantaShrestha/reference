@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-
+import PropTypes from 'prop-types';
 const Select = ({
 	label,
 	multiple,
@@ -10,7 +10,9 @@ const Select = ({
 	name,
 	options,
 	optionValue,
-	optionLabel
+	optionLabel,
+	searchAllow,
+	handleSearch
 }) => {
 	const selectWrapper = useRef(null)
 	const [showOption, setShowOption] = useState(false)
@@ -81,6 +83,13 @@ const Select = ({
 
 
 					<div className={`selected-options ${showOption ? 'active' : ''}`}>
+						{
+							searchAllow && (
+								<div className="select-option-search">
+									<input type="text" className="search-input" autoComplete='off' onChange = {handleSearch} />
+								</div>
+							)
+						}
 						<ul className="option-wrapper" onClick={handleSelection} ref={selectWrapper}>
 							{
 								options && options?.map((option, i) => {
@@ -102,7 +111,25 @@ const Select = ({
 
 	)
 }
-
+Select.propTypes ={
+	id:PropTypes.string,
+	label:PropTypes.string,
+	labelClassName:PropTypes.string,
+	wrapperClassName:PropTypes.string,
+	placeholder:PropTypes.string,
+	name:PropTypes.string,
+	optionValue:PropTypes.string,
+	optionLabel:PropTypes.string,
+	options:PropTypes.array,
+	onChange :PropTypes.func,
+	searchAllow:PropTypes.func,
+	handleSearch:PropTypes.func
+}
+Select.defaultProps = {
+    className: '',
+    children: '',
+    controller: undefined,
+};
 export default Select
 
 
