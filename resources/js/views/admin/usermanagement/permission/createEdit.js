@@ -35,8 +35,8 @@ const PermissionForm = () =>{
 	},[permission])
 
 	const permissionForm = (values) =>{
-		if(isAddMode) dispatch(PermissionCreateAction(values,navigate))
-		else dispatch(PermissionUpdateAction(values,id,navigate))
+		isAddMode ? dispatch(PermissionCreateAction(values,navigate)) :
+					dispatch(PermissionUpdateAction(values,id,navigate))
 	}
 	
 	return(

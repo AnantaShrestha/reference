@@ -9,11 +9,12 @@ class PermissionRepository{
 	/**
 	 * get list of permission
 	 */
-	public function getPermissionPagination($data=null){
+	public function getPermissionPagination(array $data=null){
 		$permissions = \DB::table('permissions')
 					->select('id','name','access_uri','created_at')
 					->orderBy('created_at','desc');
-		$permissions=$permissions->where('name','LIKE','%'.$data['search'].'%');
+		if($data['search'])
+			$permissions=$permissions->where('name','LIKE','%'.$data['search'].'%');
 		$permissions=$permissions->paginate($data['perPage'],['*'],'page',$data['page']);
 
 		return $permissions;
@@ -29,15 +30,18 @@ class PermissionRepository{
 	/**
 	 * @return permission according to id
 	 */
-	public function findPermission($id){
+	public function findPermission(int $id){
 
-		return $this->permission->select('id','name','access_uri')->where('id',$id)->first();
+		return $this->permission
+				->where('id',$id)
+				->select('id','name','access_uri')
+				->first();
 	}
 	/**
 	 * @return null
 	 * update permission in database
 	 */
-	public function updatePermission(array $data,$id){
+	public function updatePermission(array $data,int $id){
 		$permission=$this->findPermission($id);
 		$permission->update($data);
 
@@ -47,7 +51,7 @@ class PermissionRepository{
 	 * @return null
 	 * delete permission in database
 	 */
-	public function deletePermission($id){
+	public function deletePermission(int $id){
 		$permission=$this->findPermission($id);
 		$permission->delete();
 		

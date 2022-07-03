@@ -5,6 +5,8 @@ import {useSelector,useDispatch} from 'react-redux'
 import { useNavigate } from "react-router";
 import {Form,Button,TextField,CheckBox,Select,useForm} from '@/components/Form'
 import {PermissionListAction} from '@/services/redux/usermanagement/permission/PermissionAction'
+import {RoleCreateAction,RoleEditAction,RoleUpdateAction} from '@/services/redux/usermanagement/role/RoleAction'
+
 const RoleForm = () =>{
 	//ref
 	const form = useRef(null)
@@ -17,22 +19,45 @@ const RoleForm = () =>{
 	const {id}=useParams()
 	//form mode
 	const isAddMode = id ? false : true
+	const [selectedPermissions,setSelectedPermissions] = useState([])
 	const [currentPage,setCurrentPage] = useState(1)
 	const [search,setSearch] = useState('')
 	//selector
 	const {permissionList } =useSelector((state) => state.permissionState)
+	const {roleFormLoadingResponse,role} = useSelector((state) => state.roleState)
 	const perPage = 10
 
 	useEffect(()=>{
 		dispatch(PermissionListAction({page:currentPage,perPage:perPage,search:search}))
+		if(!isAddMode) dispatch(RoleEditAction(id))
+
 	},[])
 
+	useEffect(()=>{
+		setSelectedPermissions([])
+		if(!isAddMode){
+			let permissions = role?.permissions
+			permissions?.map((item,i)=>{
+				setSelectedPermissions(selectedPermissions=>[...selectedPermissions,item.id])
+			})
+			setFieldsValue(form,{
+				'name' : role?.name,
+			})
+		}
+	},[role])
+
+	useEffect(()=>{
+		setFieldsValue(form,{
+			'permissions' : selectedPermissions,
+		})
+	},[selectedPermissions])
 	const searchOption = (value) =>{
-		console.log(value)
+		
 	}
 
 	const roleForm = (values) =>{
-		console.log(values)
+		isAddMode ? dispatch(RoleCreateAction(values,navigate)) :
+	 			dispatch(RoleUpdateAction(values,id,navigate))
 	}
 	
 	return(
@@ -66,7 +91,7 @@ const RoleForm = () =>{
 					/>
 					<Select
 						multiple={true}
-						name='permission_id'
+						name='permissions'
 						className = 'form-control'
 						label="Permisions"
 						placeholder="Permission"
@@ -79,7 +104,7 @@ const RoleForm = () =>{
 					<div className="form-group">
 						<div className="form-label"></div>
 						<div className="form-input form-action">
-							<Button  type="submit" className="btn-success" name={!isAddMode ? 'Update' : 'Create'} />
+							<Button isLoading={roleFormLoadingResponse}  type="submit" className="btn-success" name={!isAddMode ? 'Update' : 'Create'} />
 						</div>
 					</div>
 				</Form>

@@ -107,3 +107,22 @@
     background-position: 468px 0;
   }
 }
+
+.role-permissions-wrapper{
+	ul{
+		display: flex;
+		row-gap:5px;
+		column-gap:5px;
+		flex-flow:row wrap;
+
+		li{
+				//width:calc(100% / 3 - 5px);
+				background: var(--themecolor);
+				color: var(--white);
+				padding: 3px 5px;
+				text-align: center;
+				border-radius: 4px;
+				white-space: nowrap;
+		}
+	}
+}

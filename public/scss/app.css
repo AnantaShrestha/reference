@@ -729,7 +729,7 @@ ul, ol {
   height: 100%;
 }
 .selection-wrapper .selected-items-wrapper .selected-items .select-placeholder span {
-  color: #ccc;
+  color: #ddd;
 }
 .selection-wrapper .selected-items-wrapper .selected-items .select-placeholder .selected-values {
   display: flex;
@@ -772,6 +772,10 @@ ul, ol {
 .selection-wrapper .selected-options .select-option-search input {
   height: 30px;
   outline: none;
+}
+.selection-wrapper .selected-options .option-wrapper {
+  max-height: 190px;
+  overflow-y: auto;
 }
 .selection-wrapper .selected-options .option-wrapper .option-item {
   font-size: 14px;
@@ -1114,6 +1118,22 @@ ul, ol {
     background-position: 468px 0;
   }
 }
+.role-permissions-wrapper ul {
+  display: flex;
+  row-gap: 5px;
+  -moz-column-gap: 5px;
+       column-gap: 5px;
+  flex-flow: row wrap;
+}
+.role-permissions-wrapper ul li {
+  background: var(--themecolor);
+  color: var(--white);
+  padding: 3px 5px;
+  text-align: center;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
 .permission-denied {
   padding: 40px;
   justify-content: center;

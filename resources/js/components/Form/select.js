@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import PropTypes from 'prop-types';
+import useForm from './hooks/useForm'
+
 const Select = ({
 	label,
 	multiple,
@@ -16,9 +18,18 @@ const Select = ({
 }) => {
 	const selectWrapper = useRef(null)
 	const [showOption, setShowOption] = useState(false)
-	const [checkedValues, setCheckedValues] = useState([])
 
-	const handleOption = (e) => {
+	//find checked item or not
+	const findCheckedItem = (element) =>{
+		let placeholder = element.querySelector('.placeholder-text')
+		if(element.querySelector('.selected-values').children.length > 0)
+			placeholder.style.display = 'none'
+		else
+			placeholder.style.display = 'block'
+	}
+
+	//handle option of select box
+	const handleOption = (e) =>{
 		let target = e.target
 		if (target.tagName != 'STRONG')
 			setShowOption(!showOption)
@@ -27,23 +38,46 @@ const Select = ({
 				let label = item.querySelector('label')
 				let input = item.querySelector('input')
 				if (target.previousSibling.innerHTML === label.innerHTML) {
-					let remainingItems = checkedValues.filter((item) => { return item != target.previousSibling.innerHTML });
-					setCheckedValues(remainingItems)
+					target.parentNode.parentNode.querySelectorAll('.select-value').forEach((item)=>{
+						let removeValue = item.querySelector('span').innerHTML
+						if(label.innerHTML === removeValue){
+							item.remove()
+						}
+					})
 					input.checked = false
+					findCheckedItem(item.parentNode.parentNode.previousSibling)
 				}
 			})
 		}
 	}
-	
-	const handleSelection = (e) => {
+
+	//handle selection of select box
+	const handleSelection = (e) =>{
 		let checkedStatus = e.target.checked
 		let value = e.target.parentNode.querySelector('label').innerHTML
+		let parentWrapper = e.target.parentNode.parentNode.parentNode.previousSibling
+		let selectValueTarget = parentWrapper.querySelector('.selected-values')
 		if (checkedStatus) {
-			setCheckedValues(checkedValues => [...checkedValues, value])
-		} else {
-			let remainingItems = checkedValues.filter((item) => { return item != value });
-			setCheckedValues(remainingItems)
+			let selectItemWrapper = document.createElement('div')
+				selectItemWrapper.classList.add('select-value')
+			let span = document.createElement('span')
+				span.innerHTML = value
+				selectItemWrapper.append(span)
+			let strong =document.createElement('strong')
+				strong.classList.add('remove-select')
+				strong.innerHTML = `&times;`
+				selectItemWrapper.append(strong)
+			selectValueTarget.append(selectItemWrapper)	
 		}
+		if(!checkedStatus){
+			selectValueTarget.querySelectorAll('.select-value').forEach((item)=>{
+				let removeValue = item.querySelector('span').innerHTML
+				if(value === removeValue){
+					item.remove()
+				}
+			})
+		}
+		findCheckedItem(parentWrapper)
 	}
 
 	return (
@@ -62,21 +96,8 @@ const Select = ({
 					<div className={`selected-items-wrapper ${name}`}>
 						<div className="selected-items" onClick={handleOption}>
 							<div className="select-placeholder">
-								{placeholder && checkedValues.length == 0 && (<span className="placeholder-text">{placeholder}</span>)}
-								{
-									checkedValues.length > 0 && (
-										<div className="selected-values">
-											{
-												checkedValues?.map((item, i) => {
-													return (
-														<div className="select-value" key={i}><span>{item}</span><strong className="remove-select">&times;</strong></div>
-													)
-												})
-											}
-										</div>
-									)
-								}
-
+								<span className="placeholder-text">{placeholder}</span>	
+								<div className="selected-values"></div>
 							</div>
 						</div>
 					</div>
@@ -95,7 +116,7 @@ const Select = ({
 								options && options?.map((option, i) => {
 									return (
 										<li className="option-item" key={i}>
-											<input name={name} id={`option-${option[optionValue]}`} type={multiple ? 'checkbox' : 'radio'} value={option[optionValue]} />
+											<input className='select-input' name={name} id={`option-${option[optionValue]}`} type={multiple ? 'checkbox' : 'radio'} value={option[optionValue]} />
 											<label htmlFor={`option-${option[optionValue]}`}>{option[optionLabel]}</label>
 										</li>
 									)
@@ -122,12 +143,12 @@ Select.propTypes ={
 	optionLabel:PropTypes.string,
 	options:PropTypes.array,
 	onChange :PropTypes.func,
-	searchAllow:PropTypes.func,
 	handleSearch:PropTypes.func
 }
 Select.defaultProps = {
     className: '',
     children: '',
+    searchAllow:'',
     controller: undefined,
 };
 export default Select

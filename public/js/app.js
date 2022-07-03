@@ -2447,10 +2447,31 @@ var useForm = function useForm() {
 
       if (key) {
         if (_typeof(value) == 'object') {
+          var counter = 0;
           var target = form.current.querySelectorAll("input[name=".concat(key, "]"));
           target && target.forEach(function (item) {
-            var itemValue = item.value;
+            var itemValue = isNaN(item.value) ? item.value : parseInt(item.value);
             if (value.includes(itemValue)) item.checked = true;else item.checked = false;
+
+            if (item.className === 'select-input' && item.checked) {
+              var _value = item.parentNode.querySelector('label').innerHTML;
+              var parentWrapper = item.parentNode.parentNode.parentNode.previousSibling;
+              var selectValueTarget = parentWrapper.querySelector('.selected-values');
+              if (counter == 0) selectValueTarget.innerHTML = '';
+              var selectItemWrapper = document.createElement('div');
+              selectItemWrapper.classList.add('select-value');
+              var span = document.createElement('span');
+              span.innerHTML = _value;
+              selectItemWrapper.append(span);
+              var strong = document.createElement('strong');
+              strong.classList.add('remove-select');
+              strong.innerHTML = "&times;";
+              selectItemWrapper.append(strong);
+              selectValueTarget.append(selectItemWrapper);
+              var placeholder = parentWrapper.querySelector('.placeholder-text');
+              if (parentWrapper.querySelector('.selected-values').children.length > 0) placeholder.style.display = 'none';else placeholder.style.display = 'block';
+              counter++;
+            }
           });
         } else {
           var _target = form.current.querySelector("input[name=".concat(key, "]")) || form.current.querySelector("select[name=".concat(key, "]")) || form.current.querySelector("textarea[name=".concat(key, "]"));
@@ -2634,17 +2655,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _hooks_useForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./hooks/useForm */ "./resources/js/components/Form/hooks/useForm.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -2656,6 +2670,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -2680,12 +2695,14 @@ var Select = function Select(_ref) {
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
       _useState2 = _slicedToArray(_useState, 2),
       showOption = _useState2[0],
-      setShowOption = _useState2[1];
+      setShowOption = _useState2[1]; //find checked item or not
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
-      _useState4 = _slicedToArray(_useState3, 2),
-      checkedValues = _useState4[0],
-      setCheckedValues = _useState4[1];
+
+  var findCheckedItem = function findCheckedItem(element) {
+    var placeholder = element.querySelector('.placeholder-text');
+    if (element.querySelector('.selected-values').children.length > 0) placeholder.style.display = 'none';else placeholder.style.display = 'block';
+  }; //handle option of select box
+
 
   var handleOption = function handleOption(e) {
     var target = e.target;
@@ -2697,93 +2714,104 @@ var Select = function Select(_ref) {
         var input = item.querySelector('input');
 
         if (target.previousSibling.innerHTML === label.innerHTML) {
-          var remainingItems = checkedValues.filter(function (item) {
-            return item != target.previousSibling.innerHTML;
+          target.parentNode.parentNode.querySelectorAll('.select-value').forEach(function (item) {
+            var removeValue = item.querySelector('span').innerHTML;
+
+            if (label.innerHTML === removeValue) {
+              item.remove();
+            }
           });
-          setCheckedValues(remainingItems);
           input.checked = false;
+          findCheckedItem(item.parentNode.parentNode.previousSibling);
         }
       });
     }
-  };
+  }; //handle selection of select box
+
 
   var handleSelection = function handleSelection(e) {
     var checkedStatus = e.target.checked;
     var value = e.target.parentNode.querySelector('label').innerHTML;
+    var parentWrapper = e.target.parentNode.parentNode.parentNode.previousSibling;
+    var selectValueTarget = parentWrapper.querySelector('.selected-values');
 
     if (checkedStatus) {
-      setCheckedValues(function (checkedValues) {
-        return [].concat(_toConsumableArray(checkedValues), [value]);
-      });
-    } else {
-      var remainingItems = checkedValues.filter(function (item) {
-        return item != value;
-      });
-      setCheckedValues(remainingItems);
+      var selectItemWrapper = document.createElement('div');
+      selectItemWrapper.classList.add('select-value');
+      var span = document.createElement('span');
+      span.innerHTML = value;
+      selectItemWrapper.append(span);
+      var strong = document.createElement('strong');
+      strong.classList.add('remove-select');
+      strong.innerHTML = "&times;";
+      selectItemWrapper.append(strong);
+      selectValueTarget.append(selectItemWrapper);
     }
+
+    if (!checkedStatus) {
+      selectValueTarget.querySelectorAll('.select-value').forEach(function (item) {
+        var removeValue = item.querySelector('span').innerHTML;
+
+        if (value === removeValue) {
+          item.remove();
+        }
+      });
+    }
+
+    findCheckedItem(parentWrapper);
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
     className: "form-group ".concat(wrapperClassName),
-    children: [label && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+    children: [label && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       className: "form-label",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
         className: labelClassName,
         children: label
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       className: "form-input",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
         className: "selection-wrapper ".concat(className),
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
           className: "selected-items-wrapper ".concat(name),
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
             className: "selected-items",
             onClick: handleOption,
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
               className: "select-placeholder",
-              children: [placeholder && checkedValues.length == 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("span", {
                 className: "placeholder-text",
                 children: placeholder
-              }), checkedValues.length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
-                className: "selected-values",
-                children: checkedValues === null || checkedValues === void 0 ? void 0 : checkedValues.map(function (item, i) {
-                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
-                    className: "select-value",
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("span", {
-                      children: item
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("strong", {
-                      className: "remove-select",
-                      children: "\xD7"
-                    })]
-                  }, i);
-                })
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+                className: "selected-values"
               })]
             })
           })
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
           className: "selected-options ".concat(showOption ? 'active' : ''),
-          children: [searchAllow && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("div", {
+          children: [searchAllow && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
             className: "select-option-search",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
               type: "text",
               className: "search-input",
               autoComplete: "off",
               onChange: handleSearch
             })
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("ul", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("ul", {
             className: "option-wrapper",
             onClick: handleSelection,
             ref: selectWrapper,
             children: options && (options === null || options === void 0 ? void 0 : options.map(function (option, i) {
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)("li", {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("li", {
                 className: "option-item",
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
+                  className: "select-input",
                   name: name,
                   id: "option-".concat(option[optionValue]),
                   type: multiple ? 'checkbox' : 'radio',
                   value: option[optionValue]
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("label", {
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("label", {
                   htmlFor: "option-".concat(option[optionValue]),
                   children: option[optionLabel]
                 })]
@@ -2797,22 +2825,22 @@ var Select = function Select(_ref) {
 };
 
 Select.propTypes = {
-  id: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
-  label: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
-  labelClassName: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
-  wrapperClassName: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
-  placeholder: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
-  name: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
-  optionValue: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
-  optionLabel: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().string),
-  options: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().array),
-  onChange: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
-  searchAllow: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func),
-  handleSearch: (prop_types__WEBPACK_IMPORTED_MODULE_2___default().func)
+  id: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string),
+  label: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string),
+  labelClassName: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string),
+  wrapperClassName: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string),
+  placeholder: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string),
+  name: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string),
+  optionValue: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string),
+  optionLabel: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().string),
+  options: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().array),
+  onChange: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().func),
+  handleSearch: (prop_types__WEBPACK_IMPORTED_MODULE_3___default().func)
 };
 Select.defaultProps = {
   className: '',
   children: '',
+  searchAllow: '',
   controller: undefined
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Select);
@@ -3959,8 +3987,9 @@ var PermissionListAction = function PermissionListAction(data) {
     dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.init)(_types__WEBPACK_IMPORTED_MODULE_0__.PermissionActionType.PERMISSION_LIST_TYPE));
     var query = data ? '?page=' + data.page + '&&perPage=' + data.perPage + '&&search=' + data.search : '';
     return new Promise(function (resolve, reject) {
-      Api.get('admin/usermanagement/permission?' + query).then(function (resp) {
+      Api.get("admin/usermanagement/permission?".concat(query)).then(function (resp) {
         dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.PermissionActionType.PERMISSION_LIST_TYPE, resp.data));
+        resolve(resp);
       })["catch"](function (err) {
         if (err.response) dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
         reject(err);
@@ -3977,6 +4006,7 @@ var PermissionCreateAction = function PermissionCreateAction(data, navigate) {
         dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.PermissionActionType.PERMISSION_CREATE_TYPE, resp.data));
         dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifySuccess)(resp.data.message));
         navigate('/admin/usermanagement/permission');
+        resolve(resp);
       })["catch"](function (err) {
         if (err.response) dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
         reject(err);
@@ -3990,6 +4020,7 @@ var PermissionEditAction = function PermissionEditAction(id) {
     return new Promise(function (resolve, reject) {
       Api.get("/admin/usermanagement/permission/edit/".concat(id)).then(function (resp) {
         dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.PermissionActionType.PERMISSION_EDIT_TYPE, resp.data));
+        resolve(resp);
       })["catch"](function (err) {
         if (err.response) dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
         reject(err);
@@ -4006,6 +4037,7 @@ var PermissionUpdateAction = function PermissionUpdateAction(data, id, navigate)
         dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.PermissionActionType.PERMISSION_UPDATE_TYPE, resp.data));
         dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifySuccess)(resp.data.message));
         navigate('/admin/usermanagement/permission');
+        resolve(resp);
       })["catch"](function (err) {
         if (err.response) dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
         reject(err);
@@ -4021,6 +4053,7 @@ var PermissionDeleteAction = function PermissionDeleteAction(id) {
       Api["delete"]('/admin/usermanagement/permission/delete/' + id).then(function (resp) {
         dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.PermissionActionType.PERMISSION_DELETE_TYPE, resp.data));
         dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifySuccess)(resp.data.message));
+        resolve(resp);
       })["catch"](function (err) {
         if (err.response) dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
         reject(err);
@@ -4035,6 +4068,7 @@ var PermissionRouteListAction = function PermissionRouteListAction() {
     return new Promise(function (resolve, reject) {
       Api.get('/admin/usermanagement/permission/routeList').then(function (resp) {
         dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.PermissionActionType.PERMISSION_ROUTE_LIST_TYPE, resp.data));
+        resolve(resp);
       })["catch"](function (err) {
         if (err.response) dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
         reject(err);
@@ -4148,6 +4182,107 @@ var PermissionReducer = function PermissionReducer() {
 
 /***/ }),
 
+/***/ "./resources/js/services/redux/usermanagement/role/RoleAction.js":
+/*!***********************************************************************!*\
+  !*** ./resources/js/services/redux/usermanagement/role/RoleAction.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "RoleCreateAction": () => (/* binding */ RoleCreateAction),
+/* harmony export */   "RoleDeleteAction": () => (/* binding */ RoleDeleteAction),
+/* harmony export */   "RoleEditAction": () => (/* binding */ RoleEditAction),
+/* harmony export */   "RoleListAction": () => (/* binding */ RoleListAction),
+/* harmony export */   "RoleUpdateAction": () => (/* binding */ RoleUpdateAction)
+/* harmony export */ });
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../types */ "./resources/js/services/types.js");
+/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../common */ "./resources/js/services/common.js");
+
+ //list of role action
+
+var RoleListAction = function RoleListAction(data) {
+  return function (dispatch) {
+    dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.init)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_LIST_TYPE));
+    var query = data ? '?page=' + data.page + '&&perPage=' + data.perPage + '&&search=' + data.search : '';
+    return new Promise(function (resolve, reject) {
+      Api.get("/admin/usermanagement/role?".concat(query)).then(function (resp) {
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_LIST_TYPE, resp.data));
+        resolve(resp);
+      })["catch"](function (err) {
+        if (err.response) dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+        reject(err);
+      });
+    });
+  };
+}; //create role action
+
+var RoleCreateAction = function RoleCreateAction(data, navigate) {
+  return function (dispatch) {
+    dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.init)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_CREATE_TYPE));
+    return new Promise(function (resolve, reject) {
+      Api.post('/admin/usermanagement/role/store', data).then(function (resp) {
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_CREATE_TYPE, resp.data));
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifySuccess)(resp.data.message));
+        navigate('/admin/usermanagement/role');
+        resolve(resp);
+      })["catch"](function (err) {
+        if (err.response) dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+        reject(err);
+      });
+    });
+  };
+}; //find role according to id action
+
+var RoleEditAction = function RoleEditAction(id) {
+  return function (dispatch) {
+    return new Promise(function (resolve, reject) {
+      Api.get("/admin/usermanagement/role/edit/".concat(id)).then(function (resp) {
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_EDIT_TYPE, resp.data));
+        resolve(resp);
+      })["catch"](function (err) {
+        if (err.response) dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+        reject(err);
+      });
+    });
+  };
+}; //update role according to id action
+
+var RoleUpdateAction = function RoleUpdateAction(data, id, navigate) {
+  return function (dispatch) {
+    dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.init)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_UPDATE_TYPE));
+    return new Promise(function (resolve, reject) {
+      Api.put("admin/usermanagement/role/edit/".concat(id), data).then(function (resp) {
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_UPDATE_TYPE, resp.data));
+        navigate('/admin/usermanagement/role');
+        resolve(resp);
+      })["catch"](function (err) {
+        if (err.response) dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+        reject(err);
+      });
+    });
+  };
+}; //delete role action
+
+var RoleDeleteAction = function RoleDeleteAction(id) {
+  return function (dispatch) {
+    dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.init)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_DELETE_TYPE));
+    return new Promise(function (resolve, reject) {
+      Api["delete"]('/admin/usermanagement/role/delete/' + id).then(function (resp) {
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_DELETE_TYPE, resp.data));
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifySuccess)(resp.data.message));
+        resolve(resp);
+      })["catch"](function (err) {
+        if (err.response) dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+        reject(err);
+      });
+    });
+  };
+};
+
+/***/ }),
+
 /***/ "./resources/js/services/redux/usermanagement/role/RoleReducer.js":
 /*!************************************************************************!*\
   !*** ./resources/js/services/redux/usermanagement/role/RoleReducer.js ***!
@@ -4160,9 +4295,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../types */ "./resources/js/services/types.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 var roleState = {
-  roleFormLoadingResponse: false
+  roleList: [],
+  role: {},
+  roleListLoadingResponse: false,
+  roleFormLoadingResponse: false,
+  roleDeleteLoadingResponse: false
 };
 
 var RoleReducer = function RoleReducer() {
@@ -4170,6 +4315,55 @@ var RoleReducer = function RoleReducer() {
   var action = arguments.length > 1 ? arguments[1] : undefined;
 
   switch (action.type) {
+    case _types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_LIST_TYPE_INIT:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        roleListLoadingResponse: true
+      });
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_LIST_TYPE_SUCCESS:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        roleListLoadingResponse: false,
+        roleList: action.payload.items.data
+      });
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_CREATE_TYPE_INIT:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        roleFormLoadingResponse: true
+      });
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_CREATE_TYPE_SUCCESS:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        roleFormLoadingResponse: false
+      });
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_EDIT_TYPE_SUCCESS:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        role: action.payload.items
+      });
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_UPDATE_TYPE_INIT:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        roleFormLoadingResponse: true
+      });
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_UPDATE_TYPE_SUCCESS:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        roleFormLoadingResponse: false
+      });
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_DELETE_TYPE_INIT:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        roleDeleteLoadingResponse: true
+      });
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_DELETE_TYPE_SUCCESS:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        roleDeleteLoadingResponse: false,
+        roleList: state.roleList.filter(function (role) {
+          return role.id != action.payload.items.id;
+        })
+      });
+
     default:
       return state;
   }
@@ -4284,9 +4478,20 @@ var PermissionActionType = {
   PERMISSION_ROUTE_LIST_TYPE_SUCCESS: "PERMISSION_ROUTE_LIST_TYPE_SUCCESS"
 };
 var RoleActionType = {
+  ROLE_LIST_TYPE: "ROLE_LIST_TYPE",
+  ROLE_LIST_TYPE_INIT: "ROLE_LIST_TYPE_INIT",
+  ROLE_LIST_TYPE_SUCCESS: "ROLE_LIST_TYPE_SUCCESS",
   ROLE_CREATE_TYPE: "ROLE_CREATE_TYPE",
   ROLE_CREATE_TYPE_INIT: "ROLE_CREATE_TYPE_INIT",
-  ROLE_CREATE_TYPE_SUCCESS: "ROLE_CREATE_TYPE_SUCCESS"
+  ROLE_CREATE_TYPE_SUCCESS: "ROLE_CREATE_TYPE_SUCCESS",
+  ROLE_EDIT_TYPE: "ROLE_EDIT_TYPE",
+  ROLE_EDIT_TYPE_SUCCESS: "ROLE_EDIT_TYPE_SUCCESS",
+  ROLE_UPDATE_TYPE: "ROLE_UPDATE_TYPE",
+  ROLE_UPDATE_TYPE_INIT: "ROLE_UPDATE_TYPE_INIT",
+  ROLE_UPDATE_TYPE_SUCCESS: "ROLE_UPDATE_TYPE_SUCCESS",
+  ROLE_DELETE_TYPE: "ROLE_DELETE_TYPE",
+  ROLE_DELETE_TYPE_INIT: "ROLE_DELETE_TYPE_INIT",
+  ROLE_DELETE_TYPE_SUCCESS: "ROLE_DELETE_TYPE_SUCCESS"
 };
 
 /***/ }),
@@ -4514,7 +4719,7 @@ var PermissionForm = function PermissionForm() {
   }, [permission]);
 
   var permissionForm = function permissionForm(values) {
-    if (isAddMode) dispatch((0,_services_redux_usermanagement_permission_PermissionAction__WEBPACK_IMPORTED_MODULE_4__.PermissionCreateAction)(values, navigate));else dispatch((0,_services_redux_usermanagement_permission_PermissionAction__WEBPACK_IMPORTED_MODULE_4__.PermissionUpdateAction)(values, id, navigate));
+    isAddMode ? dispatch((0,_services_redux_usermanagement_permission_PermissionAction__WEBPACK_IMPORTED_MODULE_4__.PermissionCreateAction)(values, navigate)) : dispatch((0,_services_redux_usermanagement_permission_PermissionAction__WEBPACK_IMPORTED_MODULE_4__.PermissionUpdateAction)(values, id, navigate));
   };
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
@@ -4786,12 +4991,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _components_Form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/Form */ "./resources/js/components/Form/index.js");
 /* harmony import */ var _services_redux_usermanagement_permission_PermissionAction__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/services/redux/usermanagement/permission/PermissionAction */ "./resources/js/services/redux/usermanagement/permission/PermissionAction.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/services/redux/usermanagement/role/RoleAction */ "./resources/js/services/redux/usermanagement/role/RoleAction.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -4814,6 +5028,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var RoleForm = function RoleForm() {
   //ref
   var form = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
@@ -4822,31 +5037,42 @@ var RoleForm = function RoleForm() {
       setFieldsValue = _useForm.setFieldsValue; //navigate
 
 
-  var navigate = (0,react_router__WEBPACK_IMPORTED_MODULE_6__.useNavigate)(); //dispatch
+  var navigate = (0,react_router__WEBPACK_IMPORTED_MODULE_7__.useNavigate)(); //dispatch
 
   var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)(); //params
 
-  var _useParams = (0,react_router__WEBPACK_IMPORTED_MODULE_6__.useParams)(),
+  var _useParams = (0,react_router__WEBPACK_IMPORTED_MODULE_7__.useParams)(),
       id = _useParams.id; //form mode
 
 
   var isAddMode = id ? false : true;
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
       _useState2 = _slicedToArray(_useState, 2),
-      currentPage = _useState2[0],
-      setCurrentPage = _useState2[1];
+      selectedPermissions = _useState2[0],
+      setSelectedPermissions = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
       _useState4 = _slicedToArray(_useState3, 2),
-      search = _useState4[0],
-      setSearch = _useState4[1]; //selector
+      currentPage = _useState4[0],
+      setCurrentPage = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+      _useState6 = _slicedToArray(_useState5, 2),
+      search = _useState6[0],
+      setSearch = _useState6[1]; //selector
 
 
   var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(function (state) {
     return state.permissionState;
   }),
       permissionList = _useSelector.permissionList;
+
+  var _useSelector2 = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(function (state) {
+    return state.roleState;
+  }),
+      roleFormLoadingResponse = _useSelector2.roleFormLoadingResponse,
+      role = _useSelector2.role;
 
   var perPage = 10;
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
@@ -4855,36 +5081,55 @@ var RoleForm = function RoleForm() {
       perPage: perPage,
       search: search
     }));
+    if (!isAddMode) dispatch((0,_services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_5__.RoleEditAction)(id));
   }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    setSelectedPermissions([]);
 
-  var searchOption = function searchOption(value) {
-    console.log(value);
-  };
+    if (!isAddMode) {
+      var permissions = role === null || role === void 0 ? void 0 : role.permissions;
+      permissions === null || permissions === void 0 ? void 0 : permissions.map(function (item, i) {
+        setSelectedPermissions(function (selectedPermissions) {
+          return [].concat(_toConsumableArray(selectedPermissions), [item.id]);
+        });
+      });
+      setFieldsValue(form, {
+        'name': role === null || role === void 0 ? void 0 : role.name
+      });
+    }
+  }, [role]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    setFieldsValue(form, {
+      'permissions': selectedPermissions
+    });
+  }, [selectedPermissions]);
+
+  var searchOption = function searchOption(value) {};
 
   var roleForm = function roleForm(values) {
-    console.log(values);
+    isAddMode ? dispatch((0,_services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_5__.RoleCreateAction)(values, navigate)) : dispatch((0,_services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_5__.RoleUpdateAction)(values, id, navigate));
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
     className: "content-body",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
       className: "page-heading-wrapper",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         className: "page-title-wrapper",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("h1", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("h1", {
           children: [!isAddMode ? 'Edit' : 'Create', " Role"]
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         className: "action-wrapper",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Link, {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Link, {
           to: "/admin/usermanagement/role",
           className: "btn-success",
           children: "Back"
         })
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
       className: "content-box-wrapper",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_components_Form__WEBPACK_IMPORTED_MODULE_3__.Form, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(_components_Form__WEBPACK_IMPORTED_MODULE_3__.Form, {
         onFinish: roleForm,
         form: form,
         name: "roleForm",
@@ -4893,14 +5138,14 @@ var RoleForm = function RoleForm() {
           name: 'name',
           rules: 'required'
         }],
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_3__.TextField, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_3__.TextField, {
           className: "form-control",
           label: "Role Name",
           name: "name",
           placeholder: "Role Name"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_3__.Select, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_3__.Select, {
           multiple: true,
-          name: "permission_id",
+          name: "permissions",
           className: "form-control",
           label: "Permisions",
           placeholder: "Permission",
@@ -4908,13 +5153,14 @@ var RoleForm = function RoleForm() {
           optionLabel: "name",
           options: permissionList,
           searchAllow: true
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
           className: "form-group",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
             className: "form-label"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
             className: "form-input form-action",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_3__.Button, {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_3__.Button, {
+              isLoading: roleFormLoadingResponse,
               type: "submit",
               className: "btn-success",
               name: !isAddMode ? 'Update' : 'Create'
@@ -4943,10 +5189,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _components_Table__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/Table */ "./resources/js/components/Table/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/services/redux/usermanagement/role/RoleAction */ "./resources/js/services/redux/usermanagement/role/RoleAction.js");
+/* harmony import */ var react_icons_fa__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-icons/fa */ "./node_modules/react-icons/fa/index.esm.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
 
 
 
@@ -4955,25 +5218,125 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var RoleList = function RoleList() {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+  //dispatch
+  var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
+  var perPage = 10; // state
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
+      _useState2 = _slicedToArray(_useState, 2),
+      currentPage = _useState2[0],
+      setCurrentPage = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+      _useState4 = _slicedToArray(_useState3, 2),
+      search = _useState4[0],
+      setSearch = _useState4[1]; //selector 
+
+
+  var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(function (state) {
+    return state.roleState;
+  }),
+      roleList = _useSelector.roleList,
+      roleListLoadingResponse = _useSelector.roleListLoadingResponse;
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    dispatch((0,_services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_3__.RoleListAction)({
+      page: currentPage,
+      perPage: perPage,
+      search: search
+    }));
+  }, [search]); //search
+
+  var handleSearch = function handleSearch(e) {
+    e.preventDefault();
+    var searchValue = Object.fromEntries(new FormData(e.target));
+    setSearch(searchValue.search);
+  }; //delete role
+  //delete 
+
+
+  var handleRoleDelete = function handleRoleDelete(id) {
+    dispatch((0,_services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_3__.RoleDeleteAction)(id));
+  }; //table columns
+
+
+  var columns = [{
+    key: 'sno',
+    title: 'S.NO',
+    render: function render(row, index) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+        children: currentPage * perPage - (perPage - (index + 2 - 1))
+      });
+    }
+  }, {
+    key: 'name',
+    title: 'Role Name'
+  }, {
+    key: 'permissions',
+    title: 'Permissions',
+    render: function render(row) {
+      var _row$permissions;
+
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        className: "role-permissions-wrapper",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("ul", {
+          children: (_row$permissions = row.permissions) === null || _row$permissions === void 0 ? void 0 : _row$permissions.map(function (item, i) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("li", {
+              children: item.name
+            }, i);
+          })
+        })
+      });
+    }
+  }, {
+    key: 'created_at',
+    title: 'Created At'
+  }, {
+    key: 'action',
+    title: 'Action',
+    render: function render(row) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "table-action-wrapper",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.Link, {
+          className: "table-edit-btn",
+          to: "/admin/usermanagement/role/edit/".concat(row.id),
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_6__.FaPen, {})
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+          className: "table-delete-btn",
+          onClick: function onClick() {
+            return handleRoleDelete(row.id);
+          },
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_6__.FaTrashAlt, {})
+        })]
+      });
+    }
+  }];
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     className: "content-body",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
       className: "page-heading-wrapper",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "page-title-wrapper",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h1", {
           children: "Role"
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "action-wrapper",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_4__.Link, {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.Link, {
           to: "/admin/usermanagement/role/create",
           className: "btn-success",
           children: "Create"
         })
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-      className: "content-box-wrapper"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      className: "content-box-wrapper",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Table__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        columns: columns,
+        rowsWrapperClass: "role-list-body",
+        rows: roleList,
+        handleSearch: handleSearch,
+        loading: roleListLoadingResponse
+      })
     })]
   });
 };
@@ -71166,7 +71529,7 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"Promise based HTTP client for the browser and node.js","main":"index.js","scripts":{"test":"grunt test","start":"node ./sandbox/server.js","build":"NODE_ENV=production grunt build","preversion":"npm test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json","postversion":"git push && git push --tags","examples":"node ./examples/server.js","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","fix":"eslint --fix lib/**/*.js"},"repository":{"type":"git","url":"https://github.com/axios/axios.git"},"keywords":["xhr","http","ajax","promise","node"],"author":"Matt Zabriskie","license":"MIT","bugs":{"url":"https://github.com/axios/axios/issues"},"homepage":"https://axios-http.com","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"jsdelivr":"dist/axios.min.js","unpkg":"dist/axios.min.js","typings":"./index.d.ts","dependencies":{"follow-redirects":"^1.14.0"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}]}');
+module.exports = JSON.parse('{"_from":"axios@^0.21","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"range","registry":true,"raw":"axios@^0.21","name":"axios","escapedName":"axios","rawSpec":"^0.21","saveSpec":null,"fetchSpec":"^0.21"},"_requiredBy":["#DEV:/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_shasum":"c67b90dc0568e5c1cf2b0b858c43ba28e2eda575","_spec":"axios@^0.21","_where":"E:\\\\wampp\\\\www\\\\demo\\\\reactlaravel","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundleDependencies":false,"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"deprecated":false,"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
 
 /***/ })
 

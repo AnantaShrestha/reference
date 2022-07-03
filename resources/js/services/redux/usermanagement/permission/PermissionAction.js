@@ -6,8 +6,9 @@ export const PermissionListAction = (data) => (dispatch) =>{
 	let query =data ? '?page='+data.page+'&&perPage='+data.perPage+'&&search='+data.search : ''
 
 	return new Promise((resolve,reject) =>{
-		Api.get('admin/usermanagement/permission?'+query).then(resp=>{
+		Api.get(`admin/usermanagement/permission?${query}`).then(resp=>{
 			dispatch(success(PermissionActionType.PERMISSION_LIST_TYPE,resp.data))
+			resolve(resp)
 		}).catch(err=>{
 			if(err.response) dispatch(notifyError(err.response.data.message))
 			reject(err)
@@ -23,6 +24,7 @@ export const PermissionCreateAction =(data,navigate) => (dispatch) =>{
 			dispatch(success(PermissionActionType.PERMISSION_CREATE_TYPE,resp.data))
 			dispatch(notifySuccess(resp.data.message))
 			navigate('/admin/usermanagement/permission')
+			resolve(resp)
 		}).catch(err=>{
 			if(err.response) dispatch(notifyError(err.response.data.message))
 			reject(err)
@@ -35,6 +37,7 @@ export const PermissionEditAction = (id) => (dispatch) =>{
 	return new Promise((resolve,reject)=>{
 		Api.get(`/admin/usermanagement/permission/edit/${id}`).then(resp=>{
 			dispatch(success(PermissionActionType.PERMISSION_EDIT_TYPE,resp.data))
+			resolve(resp)
 		}).catch(err=>{
 			if(err.response) dispatch(notifyError(err.response.data.message))
 			reject(err)
@@ -51,6 +54,7 @@ export const PermissionUpdateAction = (data,id,navigate) => (dispatch) =>{
 			dispatch(success(PermissionActionType.PERMISSION_UPDATE_TYPE,resp.data))
 			dispatch(notifySuccess(resp.data.message))
 			navigate('/admin/usermanagement/permission')
+			resolve(resp)
 		}).catch(err=>{
 			if(err.response) dispatch(notifyError(err.response.data.message))
 				reject(err)
@@ -65,6 +69,7 @@ export const PermissionDeleteAction = (id) => (dispatch) =>{
 		Api.delete('/admin/usermanagement/permission/delete/'+id).then(resp=>{
 			dispatch(success(PermissionActionType.PERMISSION_DELETE_TYPE,resp.data))
 			dispatch(notifySuccess(resp.data.message))
+			resolve(resp)
 		}).catch(err=>{
 			if(err.response) dispatch(notifyError(err.response.data.message))
 			reject(err)
@@ -78,6 +83,7 @@ export const PermissionRouteListAction = () => (dispatch) =>{
 	return new Promise((resolve,reject)=>{
 		Api.get('/admin/usermanagement/permission/routeList').then(resp=>{
 			dispatch(success(PermissionActionType.PERMISSION_ROUTE_LIST_TYPE,resp.data))
+			resolve(resp)
 		}).catch(err=>{
 			if(err.response) dispatch(notifyError(err.response.data.message))
 			reject(err)

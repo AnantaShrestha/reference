@@ -155,7 +155,7 @@
 				align-items: center;
 				height:100%;
 				span{
-					color:#ccc;
+					color:#ddd;
 				}
 				.selected-values {
 					display: flex;
@@ -201,6 +201,8 @@
 			}
 		}
 		.option-wrapper{
+			max-height: 190px;
+			overflow-y: auto;
 			.option-item{
 				font-size: 14px;
 				input{
