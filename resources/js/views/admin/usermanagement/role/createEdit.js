@@ -23,7 +23,7 @@ const RoleForm = () =>{
 	const [currentPage,setCurrentPage] = useState(1)
 	const [search,setSearch] = useState('')
 	//selector
-	const {permissionList } =useSelector((state) => state.permissionState)
+	const {permissionList,permissionListLoadingResponse} =useSelector((state) => state.permissionState)
 	const {roleFormLoadingResponse,role} = useSelector((state) => state.roleState)
 	const perPage = 10
 

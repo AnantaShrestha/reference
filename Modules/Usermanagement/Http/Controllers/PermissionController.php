@@ -25,12 +25,15 @@ class PermissionController extends Controller
                 'page'=> $_GET['page'] ?? 1,
                 'search' => $_GET['search'] ?? ''
             ];
-            $permissions=$this->permissionRepository->getPermissionPagination($data);
+            $permissions=$this->permissionRepository
+                                    ->getPermissionPagination($data);
 
-            return $this->apiResponse->responseSuccess($permissions,'success',SUCCESS);
+            return $this->apiResponse
+                            ->responseSuccess($permissions,'success',SUCCESS);
         }catch(Exception $e){
 
-            return $this->apiResponse->responseError(null,$e->getMessage(),$e->statusCode());
+            return $this->apiResponse
+                            ->responseError(null,$e->getMessage(),$e->statusCode());
         }
     }
     /**
@@ -39,12 +42,15 @@ class PermissionController extends Controller
      */
     public function store(PermissionRequest $request){
         try{
-            $permission=$this->permissionRepository->storePermission($request->validated());
+            $permission=$this->permissionRepository
+                                ->storePermission($request->validated());
 
-            return $this->apiResponse->responseSuccess($permission,'Permission created successfully',SUCCESS);
+            return $this->apiResponse
+                            ->responseSuccess($permission,'Permission created successfully',SUCCESS);
         }catch(Exception $e){
 
-            return $this->apiResponse->responseError(null,$e->getMessage(),$e->statusCode());
+            return $this->apiResponse
+                            ->responseError(null,$e->getMessage(),$e->statusCode());
         }
     }
     /**
@@ -52,12 +58,15 @@ class PermissionController extends Controller
      */
     public function edit($id){
         try{
-            $permission=$this->permissionRepository->findPermission($id);
+            $permission=$this->permissionRepository
+                                ->findPermission($id);
 
-            return $this->apiResponse->responseSuccess($permission,'success',SUCCESS);
+            return $this->apiResponse
+                            ->responseSuccess($permission,'success',SUCCESS);
         }catch(Exception $e){
 
-            return $this->apiResponse->responseError(null,$e->getMessage(),$e->statusCode());
+            return $this->apiResponse
+                            ->responseError(null,$e->getMessage(),$e->statusCode());
         }
     }
     /**
@@ -65,12 +74,15 @@ class PermissionController extends Controller
      */
     public function update(PermissionRequest $request,$id){
         try{
-            $permission=$this->permissionRepository->updatePermission($request->validated(),$id);
+            $permission=$this->permissionRepository
+                                ->updatePermission($request->validated(),$id);
 
-            return $this->apiResponse->responseSuccess($permission,'Permission updated successfully',SUCCESS);
+            return $this->apiResponse
+                            ->responseSuccess($permission,'Permission updated successfully',SUCCESS);
         }catch(Exception $e){
 
-            return $this->apiResponse->responseError(null,$e->getMessage(),$e->statusCode());
+            return $this->apiResponse
+                            ->responseError(null,$e->getMessage(),$e->statusCode());
         }
     }
 
@@ -80,12 +92,15 @@ class PermissionController extends Controller
      */
     public function delete($id){
         try{
-            $permission=$this->permissionRepository->deletePermission($id);
+            $permission=$this->permissionRepository
+                                    ->deletePermission($id);
 
-            return $this->apiResponse->responseSuccess($permission,'Permission delete successfully',SUCCESS);
+            return $this->apiResponse
+                            ->responseSuccess($permission,'Permission delete successfully',SUCCESS);
         }catch(Exception $e){
 
-            return $this->apiResponse->responseError(null,$e->getMessage(),$e->statusCode());
+            return $this->apiResponse
+                            ->responseError(null,$e->getMessage(),$e->statusCode());
         }
     }
     /**
@@ -96,10 +111,12 @@ class PermissionController extends Controller
         try{
             $routeList=$this->routePermissionList();
 
-            return $this->apiResponse->responseSuccess($routeList,'Success',SUCCESS);
+            return $this->apiResponse
+                            ->responseSuccess($routeList,'Success',SUCCESS);
         }catch(Exception $e){
             
-            return $this->apiResponse->responseError(null,$e->getMessage(),$e->statusCode());
+            return $this->apiResponse
+                            ->responseError(null,$e->getMessage(),$e->statusCode());
         }
     }
 }

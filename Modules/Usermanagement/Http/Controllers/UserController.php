@@ -2,78 +2,36 @@
 
 namespace Modules\Usermanagement\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-
+use Modules\Usermanagement\Repository\UserRepository;
+use Modules\Usermanagement\Http\Requests\UserRequest;
+use App\Api\ApiResponse;
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     * @return Renderable
-     */
-    public function index()
-    {
-        return view('usermanagement::index');
+    private $apiReposnse,$userRepository;
+
+    public function __construct(ApiResponse $apiReposnse
+                                 UserRepository $userRepository){
+        $this->apiResponse = $apiResponse;
+        $this->userRepository = $userRepository;
     }
 
     /**
-     * Show the form for creating a new resource.
-     * @return Renderable
+     * @return
+     * store user
      */
-    public function create()
-    {
-        return view('usermanagement::create');
-    }
+    public function store(UserRequest $reqeust){
+        try{
+             $user=$this->userRepository
+                                ->storeUser($request->validated());
 
-    /**
-     * Store a newly created resource in storage.
-     * @param Request $request
-     * @return Renderable
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+            return $this->apiResponse
+                            ->responseSuccess($user,'user created successfully',SUCCESS);
 
-    /**
-     * Show the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function show($id)
-    {
-        return view('usermanagement::show');
-    }
+        }catch(\Exceptions $e){
 
-    /**
-     * Show the form for editing the specified resource.
-     * @param int $id
-     * @return Renderable
-     */
-    public function edit($id)
-    {
-        return view('usermanagement::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request
-     * @param int $id
-     * @return Renderable
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     * @param int $id
-     * @return Renderable
-     */
-    public function destroy($id)
-    {
-        //
+            return $this->apiResponse
+                            ->responseError(null,$e->getMessage(),$e->statusCode());
+        }
     }
 }

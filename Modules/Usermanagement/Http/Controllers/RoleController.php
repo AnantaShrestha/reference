@@ -26,12 +26,15 @@ class RoleController extends Controller
                 'page'=> $_GET['page'] ?? 1,
                 'search' => $_GET['search'] ?? ''
             ];
-            $roles=$this->roleRepository->getRolePagination($data);
+            $roles=$this->roleRepository
+                            ->getRolePagination($data);
 
-            return $this->apiResponse->responseSuccess($roles,'success',SUCCESS);
+            return $this->apiResponse
+                            ->responseSuccess($roles,'success',SUCCESS);
         }catch(Exception $e){
 
-            return $this->apiResponse->responseError(null,$e->getMessage(),$e->statusCode());
+            return $this->apiResponse
+                            ->responseError(null,$e->getMessage(),$e->statusCode());
         }
     }
 
@@ -41,12 +44,15 @@ class RoleController extends Controller
      */
     public function store(RoleRequest $request){
         try{
-            $role=$this->roleRepository->storeRole($request->validated());
+            $role=$this->roleRepository
+                            ->storeRole($request->validated());
 
-            return $this->apiResponse->responseSuccess($role,'Role created successfully',SUCCESS);
+            return $this->apiResponse
+                            ->responseSuccess($role,'Role created successfully',SUCCESS);
         }catch(Exception $e){
 
-            return $this->apiResponse->responseError(null,$e->getMessage(),$e->statusCode());
+            return $this->apiResponse
+                            ->responseError(null,$e->getMessage(),$e->statusCode());
         }
     }
 
@@ -55,12 +61,15 @@ class RoleController extends Controller
      */
     public function edit($id){
         try{
-            $role=$this->roleRepository->findRole($id);
+            $role=$this->roleRepository
+                            ->findRole($id);
 
-            return $this->apiResponse->responseSuccess($role,'success',SUCCESS);
+            return $this->apiResponse
+                            ->responseSuccess($role,'success',SUCCESS);
         }catch(Exception $e){
 
-            return $this->apiResponse->responseError(null,$e->getMessage(),$e->statusCode());
+            return $this->apiResponse
+                            ->responseError(null,$e->getMessage(),$e->statusCode());
         }
     }
 
@@ -70,12 +79,15 @@ class RoleController extends Controller
      */
     public function update(RoleRequest $request,$id){
         try{
-            $role=$this->roleRepository->updateRole($request->validated(),$id);
+            $role=$this->roleRepository
+                            ->updateRole($request->validated(),$id);
 
-            return $this->apiResponse->responseSuccess($role,'Role updated successfully',SUCCESS);
+            return $this->apiResponse
+                            ->responseSuccess($role,'Role updated successfully',SUCCESS);
         }catch(Exception $e){
 
-            return $this->apiResponse->responseError(null,$e->getMessage(),$e->statusCode());
+            return $this->apiResponse
+                            ->responseError(null,$e->getMessage(),$e->statusCode());
         }
     }
 
@@ -87,10 +99,12 @@ class RoleController extends Controller
        try{
             $role=$this->roleRepository->deleteRole($id);
 
-            return $this->apiResponse->responseSuccess($role,'Role delete successfully',SUCCESS);
+            return $this->apiResponse
+                            ->responseSuccess($role,'Role delete successfully',SUCCESS);
         }catch(Exception $e){
 
-            return $this->apiResponse->responseError(null,$e->getMessage(),$e->statusCode());
+            return $this->apiResponse
+                            ->responseError(null,$e->getMessage(),$e->statusCode());
         }
     }
 

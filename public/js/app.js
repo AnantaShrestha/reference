@@ -3672,7 +3672,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _views_admin_usermanagement_permission_createEdit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/views/admin/usermanagement/permission/createEdit */ "./resources/js/views/admin/usermanagement/permission/createEdit.js");
 /* harmony import */ var _views_admin_usermanagement_role___WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/views/admin/usermanagement/role/ */ "./resources/js/views/admin/usermanagement/role/index.js");
 /* harmony import */ var _views_admin_usermanagement_role_createEdit__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/views/admin/usermanagement/role/createEdit */ "./resources/js/views/admin/usermanagement/role/createEdit.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _views_admin_usermanagement_user__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/views/admin/usermanagement/user */ "./resources/js/views/admin/usermanagement/user/index.js");
+/* harmony import */ var _views_admin_usermanagement_user_createEdit__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @/views/admin/usermanagement/user/createEdit */ "./resources/js/views/admin/usermanagement/user/createEdit.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
 
 
 
@@ -3683,32 +3687,47 @@ __webpack_require__.r(__webpack_exports__);
   path: '/admin/usermanagement/permission',
   exact: true,
   auth: true,
-  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_views_admin_usermanagement_permission__WEBPACK_IMPORTED_MODULE_1__["default"], {})
+  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_views_admin_usermanagement_permission__WEBPACK_IMPORTED_MODULE_1__["default"], {})
 }, {
   path: '/admin/usermanagement/permission/create',
   exact: true,
   auth: true,
-  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_views_admin_usermanagement_permission_createEdit__WEBPACK_IMPORTED_MODULE_2__["default"], {})
+  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_views_admin_usermanagement_permission_createEdit__WEBPACK_IMPORTED_MODULE_2__["default"], {})
 }, {
   path: '/admin/usermanagement/permission/edit/:id',
   exact: true,
   auth: true,
-  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_views_admin_usermanagement_permission_createEdit__WEBPACK_IMPORTED_MODULE_2__["default"], {})
+  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_views_admin_usermanagement_permission_createEdit__WEBPACK_IMPORTED_MODULE_2__["default"], {})
 }, {
   path: '/admin/usermanagement/role',
   exact: true,
   auth: true,
-  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_views_admin_usermanagement_role___WEBPACK_IMPORTED_MODULE_3__["default"], {})
+  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_views_admin_usermanagement_role___WEBPACK_IMPORTED_MODULE_3__["default"], {})
 }, {
   path: '/admin/usermanagement/role/create',
   exact: true,
   auth: true,
-  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_views_admin_usermanagement_role_createEdit__WEBPACK_IMPORTED_MODULE_4__["default"], {})
+  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_views_admin_usermanagement_role_createEdit__WEBPACK_IMPORTED_MODULE_4__["default"], {})
 }, {
   path: '/admin/usermanagement/role/edit/:id',
   exact: true,
   auth: true,
-  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_views_admin_usermanagement_role_createEdit__WEBPACK_IMPORTED_MODULE_4__["default"], {})
+  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_views_admin_usermanagement_role_createEdit__WEBPACK_IMPORTED_MODULE_4__["default"], {})
+}, {
+  path: 'admin/usermanagement/user',
+  exact: true,
+  auth: true,
+  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_views_admin_usermanagement_user__WEBPACK_IMPORTED_MODULE_5__["default"], {})
+}, {
+  path: '/admin/usermanagement/user/create',
+  exact: true,
+  auth: true,
+  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_views_admin_usermanagement_user_createEdit__WEBPACK_IMPORTED_MODULE_6__["default"], {})
+}, {
+  path: '/admin/usermanagement/user/edit/:id',
+  exact: true,
+  auth: true,
+  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_views_admin_usermanagement_user_createEdit__WEBPACK_IMPORTED_MODULE_6__["default"], {})
 }]);
 
 /***/ }),
@@ -4442,7 +4461,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "AuthActionType": () => (/* binding */ AuthActionType),
 /* harmony export */   "NotificationActionType": () => (/* binding */ NotificationActionType),
 /* harmony export */   "PermissionActionType": () => (/* binding */ PermissionActionType),
-/* harmony export */   "RoleActionType": () => (/* binding */ RoleActionType)
+/* harmony export */   "RoleActionType": () => (/* binding */ RoleActionType),
+/* harmony export */   "UserActionType": () => (/* binding */ UserActionType)
 /* harmony export */ });
 //notification types
 var NotificationActionType = {
@@ -4492,6 +4512,22 @@ var RoleActionType = {
   ROLE_DELETE_TYPE: "ROLE_DELETE_TYPE",
   ROLE_DELETE_TYPE_INIT: "ROLE_DELETE_TYPE_INIT",
   ROLE_DELETE_TYPE_SUCCESS: "ROLE_DELETE_TYPE_SUCCESS"
+};
+var UserActionType = {
+  USER_LIST_TYPE: "USER_LIST_TYPE",
+  USER_LIST_TYPE_INIT: "USER_LIST_TYPE_INIT",
+  USER_LIST_TYPE_SUCCESS: "USER_LIST_TYPE_SUCCESS",
+  USER_CREATE_TYPE: "USER_CREATE_TYPE",
+  USER_CREATE_TYPE_INIT: "USER_CREATE_TYPE_INIT",
+  USER_CREATE_TYPE_SUCCESS: "USER_CREATE_TYPE_SUCCESS",
+  USER_EDIT_TYPE: "USER_EDIT_TYPE",
+  USER_EDIT_TYPE_SUCCESS: "USER_EDIT_TYPE_SUCCESS",
+  USER_UPDATE_TYPE: "USER_UPDATE_TYPE",
+  USER_UPDATE_TYPE_INIT: "USER_UPDATE_TYPE_INIT",
+  USER_UPDATE_TYPE_SUCCESS: "USER_UPDATE_TYPE_SUCCESS",
+  USER_DELETE_TYPE: "USER_DELETE_TYPE",
+  USER_DELETE_TYPE_INIT: "USER_DELETE_TYPE_INIT",
+  USER_DELETE_TYPE_SUCCESS: "USER_DELETE_TYPE_SUCCESS"
 };
 
 /***/ }),
@@ -5066,7 +5102,8 @@ var RoleForm = function RoleForm() {
   var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(function (state) {
     return state.permissionState;
   }),
-      permissionList = _useSelector.permissionList;
+      permissionList = _useSelector.permissionList,
+      permissionListLoadingResponse = _useSelector.permissionListLoadingResponse;
 
   var _useSelector2 = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(function (state) {
     return state.roleState;
@@ -5342,6 +5379,239 @@ var RoleList = function RoleList() {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RoleList);
+
+/***/ }),
+
+/***/ "./resources/js/views/admin/usermanagement/user/createEdit.js":
+/*!********************************************************************!*\
+  !*** ./resources/js/views/admin/usermanagement/user/createEdit.js ***!
+  \********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _components_Form__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/Form */ "./resources/js/components/Form/index.js");
+/* harmony import */ var _services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/services/redux/usermanagement/role/RoleAction */ "./resources/js/services/redux/usermanagement/role/RoleAction.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+var UserForm = function UserForm() {
+  //ref
+  var form = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+
+  var _useForm = (0,_components_Form__WEBPACK_IMPORTED_MODULE_2__.useForm)(),
+      setFieldsValue = _useForm.setFieldsValue; //navigate
+
+
+  var navigate = (0,react_router__WEBPACK_IMPORTED_MODULE_5__.useNavigate)(); //dispatch
+
+  var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)(); //params
+
+  var _useParams = (0,react_router__WEBPACK_IMPORTED_MODULE_5__.useParams)(),
+      id = _useParams.id; //form mode
+
+
+  var isAddMode = id ? false : true;
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
+      _useState2 = _slicedToArray(_useState, 2),
+      currentPage = _useState2[0],
+      setCurrentPage = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+      _useState4 = _slicedToArray(_useState3, 2),
+      search = _useState4[0],
+      setSearch = _useState4[1]; //selector
+
+
+  var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(function (state) {
+    return state.roleState;
+  }),
+      roleList = _useSelector.roleList,
+      roleListLoadingResponse = _useSelector.roleListLoadingResponse;
+
+  var perPage = 10;
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    dispatch((0,_services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_3__.RoleListAction)({
+      page: currentPage,
+      perPage: perPage,
+      search: search
+    }));
+  }, []); //user form
+
+  var userForm = function userForm(values) {};
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+    className: "content-body",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+      className: "page-heading-wrapper",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        className: "page-title-wrapper",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("h1", {
+          children: [!isAddMode ? 'Edit' : 'Create', " User"]
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        className: "action-wrapper",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Link, {
+          to: "/admin/usermanagement/user",
+          className: "btn-success",
+          children: "Back"
+        })
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      className: "content-box-wrapper",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.Form, {
+        onFinish: userForm,
+        form: form,
+        name: "userForm",
+        className: "form-wrapper form",
+        validation: [{
+          name: 'name',
+          rules: 'required'
+        }, {
+          name: 'username',
+          rules: 'required'
+        }, {
+          name: 'email',
+          rules: 'required|email'
+        }, {
+          name: 'password',
+          rules: 'required'
+        }],
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
+          className: "form-control",
+          label: "Full Name",
+          name: "name",
+          placeholder: "Full Name"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
+          className: "form-control",
+          label: "Username",
+          name: "username",
+          placeholder: "Username"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
+          className: "form-control",
+          label: "Email",
+          name: "email",
+          placeholder: "Email",
+          type: "email"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
+          className: "form-control",
+          label: "Phone No",
+          name: "phone_no",
+          placeholder: "Phone No"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
+          className: "form-control",
+          label: "Password",
+          name: "password",
+          placeholder: "Password",
+          type: "password"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.Select, {
+          multiple: true,
+          name: "roles",
+          className: "form-control",
+          label: "Roles",
+          placeholder: "Roles",
+          optionValue: "id",
+          optionLabel: "name",
+          options: roleList,
+          searchAllow: true
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+          className: "form-group",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+            className: "form-label"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+            className: "form-input form-action",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.Button, {
+              type: "submit",
+              className: "btn-success",
+              name: !isAddMode ? 'Update' : 'Create'
+            })
+          })]
+        })]
+      })
+    })]
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UserForm);
+
+/***/ }),
+
+/***/ "./resources/js/views/admin/usermanagement/user/index.js":
+/*!***************************************************************!*\
+  !*** ./resources/js/views/admin/usermanagement/user/index.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+
+
+
+var UserList = function UserList() {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+    className: "content-body",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      className: "page-heading-wrapper",
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "page-title-wrapper",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
+          children: "User"
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "action-wrapper",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
+          to: "/admin/usermanagement/user/create",
+          className: "btn-success",
+          children: "Create"
+        })
+      })]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "content-box-wrapper"
+    })]
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UserList);
 
 /***/ }),
 
