@@ -6,6 +6,7 @@ import RoleForm from '@/views/admin/usermanagement/role/createEdit'
 import UserList from '@/views/admin/usermanagement/user'
 import UserForm from '@/views/admin/usermanagement/user/createEdit'
 
+
 export default[
 	{
 		path:'/admin/usermanagement/permission',
@@ -44,7 +45,7 @@ export default[
 		component:<RoleForm />
 	},
 	{
-		path:'admin/usermanagement/user',
+		path:'/admin/usermanagement/user',
 		exact:true,
 		auth:true,
 		component:<UserList />

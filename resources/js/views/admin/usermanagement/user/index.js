@@ -1,8 +1,8 @@
-
 import React,{useEffect,useState} from 'react'
 import {Link } from "react-router-dom"
 import {useSelector,useDispatch} from 'react-redux'
 import {FaTrashAlt,FaPen} from 'react-icons/fa'
+
 const UserList = () =>{
     return(
         <div className="content-body">
@@ -15,7 +15,6 @@ const UserList = () =>{
                 </div>
             </div>
             <div className="content-box-wrapper">
-
             </div>
         </div>
     )

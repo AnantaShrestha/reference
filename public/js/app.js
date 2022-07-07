@@ -3714,7 +3714,7 @@ __webpack_require__.r(__webpack_exports__);
   auth: true,
   component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_views_admin_usermanagement_role_createEdit__WEBPACK_IMPORTED_MODULE_4__["default"], {})
 }, {
-  path: 'admin/usermanagement/user',
+  path: '/admin/usermanagement/user',
   exact: true,
   auth: true,
   component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_7__.jsx)(_views_admin_usermanagement_user__WEBPACK_IMPORTED_MODULE_5__["default"], {})
@@ -5025,15 +5025,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _components_Form__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/components/Form */ "./resources/js/components/Form/index.js");
-/* harmony import */ var _services_redux_usermanagement_permission_PermissionAction__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/services/redux/usermanagement/permission/PermissionAction */ "./resources/js/services/redux/usermanagement/permission/PermissionAction.js");
-/* harmony import */ var _services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @/services/redux/usermanagement/role/RoleAction */ "./resources/js/services/redux/usermanagement/role/RoleAction.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _components_Form__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/Form */ "./resources/js/components/Form/index.js");
+/* harmony import */ var _services_redux_usermanagement_permission_PermissionAction__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/services/redux/usermanagement/permission/PermissionAction */ "./resources/js/services/redux/usermanagement/permission/PermissionAction.js");
+/* harmony import */ var _services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/services/redux/usermanagement/role/RoleAction */ "./resources/js/services/redux/usermanagement/role/RoleAction.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -5064,20 +5062,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-
 var RoleForm = function RoleForm() {
   //ref
   var form = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
 
-  var _useForm = (0,_components_Form__WEBPACK_IMPORTED_MODULE_3__.useForm)(),
+  var _useForm = (0,_components_Form__WEBPACK_IMPORTED_MODULE_2__.useForm)(),
       setFieldsValue = _useForm.setFieldsValue; //navigate
 
 
-  var navigate = (0,react_router__WEBPACK_IMPORTED_MODULE_7__.useNavigate)(); //dispatch
+  var navigate = (0,react_router__WEBPACK_IMPORTED_MODULE_6__.useNavigate)(); //dispatch
 
-  var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)(); //params
+  var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)(); //params
 
-  var _useParams = (0,react_router__WEBPACK_IMPORTED_MODULE_7__.useParams)(),
+  var _useParams = (0,react_router__WEBPACK_IMPORTED_MODULE_6__.useParams)(),
       id = _useParams.id; //form mode
 
 
@@ -5099,13 +5096,13 @@ var RoleForm = function RoleForm() {
       setSearch = _useState6[1]; //selector
 
 
-  var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(function (state) {
+  var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(function (state) {
     return state.permissionState;
   }),
       permissionList = _useSelector.permissionList,
       permissionListLoadingResponse = _useSelector.permissionListLoadingResponse;
 
-  var _useSelector2 = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(function (state) {
+  var _useSelector2 = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(function (state) {
     return state.roleState;
   }),
       roleFormLoadingResponse = _useSelector2.roleFormLoadingResponse,
@@ -5113,12 +5110,12 @@ var RoleForm = function RoleForm() {
 
   var perPage = 10;
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    dispatch((0,_services_redux_usermanagement_permission_PermissionAction__WEBPACK_IMPORTED_MODULE_4__.PermissionListAction)({
+    dispatch((0,_services_redux_usermanagement_permission_PermissionAction__WEBPACK_IMPORTED_MODULE_3__.PermissionListAction)({
       page: currentPage,
       perPage: perPage,
       search: search
     }));
-    if (!isAddMode) dispatch((0,_services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_5__.RoleEditAction)(id));
+    if (!isAddMode) dispatch((0,_services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_4__.RoleEditAction)(id));
   }, []);
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     setSelectedPermissions([]);
@@ -5144,29 +5141,29 @@ var RoleForm = function RoleForm() {
   var searchOption = function searchOption(value) {};
 
   var roleForm = function roleForm(values) {
-    isAddMode ? dispatch((0,_services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_5__.RoleCreateAction)(values, navigate)) : dispatch((0,_services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_5__.RoleUpdateAction)(values, id, navigate));
+    isAddMode ? dispatch((0,_services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_4__.RoleCreateAction)(values, navigate)) : dispatch((0,_services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_4__.RoleUpdateAction)(values, id, navigate));
   };
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
     className: "content-body",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
       className: "page-heading-wrapper",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
         className: "page-title-wrapper",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("h1", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("h1", {
           children: [!isAddMode ? 'Edit' : 'Create', " Role"]
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
         className: "action-wrapper",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_8__.Link, {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Link, {
           to: "/admin/usermanagement/role",
           className: "btn-success",
           children: "Back"
         })
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
       className: "content-box-wrapper",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(_components_Form__WEBPACK_IMPORTED_MODULE_3__.Form, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.Form, {
         onFinish: roleForm,
         form: form,
         name: "roleForm",
@@ -5175,12 +5172,12 @@ var RoleForm = function RoleForm() {
           name: 'name',
           rules: 'required'
         }],
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_3__.TextField, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
           className: "form-control",
           label: "Role Name",
           name: "name",
           placeholder: "Role Name"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_3__.Select, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.Select, {
           multiple: true,
           name: "permissions",
           className: "form-control",
@@ -5190,13 +5187,13 @@ var RoleForm = function RoleForm() {
           optionLabel: "name",
           options: permissionList,
           searchAllow: true
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
           className: "form-group",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
             className: "form-label"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
             className: "form-input form-action",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_3__.Button, {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.Button, {
               isLoading: roleFormLoadingResponse,
               type: "submit",
               className: "btn-success",
@@ -5393,14 +5390,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _components_Form__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/Form */ "./resources/js/components/Form/index.js");
-/* harmony import */ var _services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/services/redux/usermanagement/role/RoleAction */ "./resources/js/services/redux/usermanagement/role/RoleAction.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _components_Form__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/Form */ "./resources/js/components/Form/index.js");
+/* harmony import */ var _services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/services/redux/usermanagement/role/RoleAction */ "./resources/js/services/redux/usermanagement/role/RoleAction.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -5421,45 +5416,44 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-
 var UserForm = function UserForm() {
   //ref
-  var form = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
+  var form = useRef(null);
 
-  var _useForm = (0,_components_Form__WEBPACK_IMPORTED_MODULE_2__.useForm)(),
+  var _useForm = (0,_components_Form__WEBPACK_IMPORTED_MODULE_1__.useForm)(),
       setFieldsValue = _useForm.setFieldsValue; //navigate
 
 
-  var navigate = (0,react_router__WEBPACK_IMPORTED_MODULE_5__.useNavigate)(); //dispatch
+  var navigate = (0,react_router__WEBPACK_IMPORTED_MODULE_4__.useNavigate)(); //dispatch
 
-  var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)(); //params
+  var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_0__.useDispatch)(); //params
 
-  var _useParams = (0,react_router__WEBPACK_IMPORTED_MODULE_5__.useParams)(),
+  var _useParams = (0,react_router__WEBPACK_IMPORTED_MODULE_4__.useParams)(),
       id = _useParams.id; //form mode
 
 
   var isAddMode = id ? false : true;
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
+  var _useState = useState(1),
       _useState2 = _slicedToArray(_useState, 2),
       currentPage = _useState2[0],
       setCurrentPage = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+  var _useState3 = useState(''),
       _useState4 = _slicedToArray(_useState3, 2),
       search = _useState4[0],
       setSearch = _useState4[1]; //selector
 
 
-  var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(function (state) {
+  var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_0__.useSelector)(function (state) {
     return state.roleState;
   }),
       roleList = _useSelector.roleList,
       roleListLoadingResponse = _useSelector.roleListLoadingResponse;
 
   var perPage = 10;
-  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
-    dispatch((0,_services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_3__.RoleListAction)({
+  useEffect(function () {
+    dispatch((0,_services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_2__.RoleListAction)({
       page: currentPage,
       perPage: perPage,
       search: search
@@ -5468,26 +5462,26 @@ var UserForm = function UserForm() {
 
   var userForm = function userForm(values) {};
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
     className: "content-body",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
       className: "page-heading-wrapper",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "page-title-wrapper",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("h1", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("h1", {
           children: [!isAddMode ? 'Edit' : 'Create', " User"]
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         className: "action-wrapper",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Link, {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.Link, {
           to: "/admin/usermanagement/user",
           className: "btn-success",
           children: "Back"
         })
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
       className: "content-box-wrapper",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.Form, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components_Form__WEBPACK_IMPORTED_MODULE_1__.Form, {
         onFinish: userForm,
         form: form,
         name: "userForm",
@@ -5505,34 +5499,34 @@ var UserForm = function UserForm() {
           name: 'password',
           rules: 'required'
         }],
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_1__.TextField, {
           className: "form-control",
           label: "Full Name",
           name: "name",
           placeholder: "Full Name"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_1__.TextField, {
           className: "form-control",
           label: "Username",
           name: "username",
           placeholder: "Username"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_1__.TextField, {
           className: "form-control",
           label: "Email",
           name: "email",
           placeholder: "Email",
           type: "email"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_1__.TextField, {
           className: "form-control",
           label: "Phone No",
           name: "phone_no",
           placeholder: "Phone No"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_1__.TextField, {
           className: "form-control",
           label: "Password",
           name: "password",
           placeholder: "Password",
           type: "password"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.Select, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_1__.Select, {
           multiple: true,
           name: "roles",
           className: "form-control",
@@ -5542,13 +5536,13 @@ var UserForm = function UserForm() {
           optionLabel: "name",
           options: roleList,
           searchAllow: true
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
           className: "form-group",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
             className: "form-label"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
             className: "form-input form-action",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.Button, {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_1__.Button, {
               type: "submit",
               className: "btn-success",
               name: !isAddMode ? 'Update' : 'Create'
