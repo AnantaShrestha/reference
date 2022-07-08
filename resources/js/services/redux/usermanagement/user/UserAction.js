@@ -3,6 +3,7 @@ import {init,success,notifyError,notifySuccess} from '../../../common'
 
 
 
+
 export const UserCreateAction = (data,navigate) => (dispatch)=>{
 		dispatch(init(UserActionType.USER_CREATE_TYPE))
 

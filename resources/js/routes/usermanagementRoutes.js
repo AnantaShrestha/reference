@@ -7,6 +7,7 @@ import UserList from '@/views/admin/usermanagement/user'
 import UserForm from '@/views/admin/usermanagement/user/createEdit'
 
 
+
 export default[
 	{
 		path:'/admin/usermanagement/permission',

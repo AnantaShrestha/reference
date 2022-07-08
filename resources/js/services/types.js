@@ -44,7 +44,6 @@ export const PermissionActionType = {
 
 }
 
-
 export const RoleActionType = {
 	ROLE_LIST_TYPE : "ROLE_LIST_TYPE",
 	ROLE_LIST_TYPE_INIT : "ROLE_LIST_TYPE_INIT",

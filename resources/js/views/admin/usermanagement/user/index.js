@@ -4,6 +4,7 @@ import {useSelector,useDispatch} from 'react-redux'
 import {FaTrashAlt,FaPen} from 'react-icons/fa'
 
 const UserList = () =>{
+    
     return(
         <div className="content-body">
             <div className="page-heading-wrapper">
