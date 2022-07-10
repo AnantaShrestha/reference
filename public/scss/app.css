@@ -1118,6 +1118,9 @@ ul, ol {
     background-position: 468px 0;
   }
 }
+.role-permissions-wrapper {
+  max-width: 300px;
+}
 .role-permissions-wrapper ul {
   display: flex;
   row-gap: 5px;

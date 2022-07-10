@@ -2446,7 +2446,7 @@ var useForm = function useForm() {
           value = _ref2[1];
 
       if (key) {
-        if (_typeof(value) == 'object') {
+        if (value && _typeof(value) == 'object') {
           var counter = 0;
           var target = form.current.querySelectorAll("input[name=".concat(key, "]"));
           target && target.forEach(function (item) {
@@ -2577,7 +2577,7 @@ var useValidation = function useValidation(validationRules) {
     var span = document.createElement('span');
     div.append(span);
 
-    if (!formData[fieldName] && fieldRules.includes('required')) {
+    if (fieldElement && !formData[fieldName] && fieldRules.includes('required')) {
       span.innerHTML = "".concat(fieldName, " is required");
       fieldElement.classList.add('invalid');
       fieldElement.nextSibling && fieldElement.nextSibling.remove();
@@ -3622,8 +3622,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _views_admin_auth_login__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @/views/admin/auth/login */ "./resources/js/views/admin/auth/login.js");
 /* harmony import */ var _views_admin_dashboard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/views/admin/dashboard */ "./resources/js/views/admin/dashboard.js");
-/* harmony import */ var _usermanagementRoutes__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./usermanagementRoutes */ "./resources/js/routes/usermanagementRoutes.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _views_admin_chatroom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/views/admin/chatroom */ "./resources/js/views/admin/chatroom/index.js");
+/* harmony import */ var _usermanagementRoutes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./usermanagementRoutes */ "./resources/js/routes/usermanagementRoutes.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
 function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -3640,18 +3641,24 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 
 
+
 var routes = [{
   path: '/admin/login',
   exact: true,
   auth: false,
-  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_views_admin_auth_login__WEBPACK_IMPORTED_MODULE_0__["default"], {})
+  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_views_admin_auth_login__WEBPACK_IMPORTED_MODULE_0__["default"], {})
 }, {
   path: '/admin/dashboard',
   exact: true,
   auth: true,
-  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_views_admin_dashboard__WEBPACK_IMPORTED_MODULE_1__["default"], {})
+  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_views_admin_dashboard__WEBPACK_IMPORTED_MODULE_1__["default"], {})
+}, {
+  path: '/admin/chat',
+  exact: true,
+  auth: true,
+  component: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_views_admin_chatroom__WEBPACK_IMPORTED_MODULE_2__["default"], {})
 }];
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ([].concat(routes, _toConsumableArray(_usermanagementRoutes__WEBPACK_IMPORTED_MODULE_2__["default"])));
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ([].concat(routes, _toConsumableArray(_usermanagementRoutes__WEBPACK_IMPORTED_MODULE_3__["default"])));
 
 /***/ }),
 
@@ -3741,6 +3748,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "failed": () => (/* binding */ failed),
 /* harmony export */   "init": () => (/* binding */ init),
 /* harmony export */   "notifyError": () => (/* binding */ notifyError),
 /* harmony export */   "notifySuccess": () => (/* binding */ notifySuccess),
@@ -3757,6 +3765,11 @@ var success = function success(type, payload) {
   return {
     type: "".concat(type, "_SUCCESS"),
     payload: payload
+  };
+};
+var failed = function failed(type) {
+  return {
+    type: "".concat(type, "_FAILED")
   };
 };
 var notifySuccess = function notifySuccess(payload) {
@@ -4230,7 +4243,11 @@ var RoleListAction = function RoleListAction(data) {
         dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_LIST_TYPE, resp.data));
         resolve(resp);
       })["catch"](function (err) {
-        if (err.response) dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+        if (err.response) {
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.failed)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_LIST_TYPE));
+        }
+
         reject(err);
       });
     });
@@ -4247,7 +4264,11 @@ var RoleCreateAction = function RoleCreateAction(data, navigate) {
         navigate('/admin/usermanagement/role');
         resolve(resp);
       })["catch"](function (err) {
-        if (err.response) dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+        if (err.response) {
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.failed)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_CREATE_TYPE));
+        }
+
         reject(err);
       });
     });
@@ -4261,7 +4282,11 @@ var RoleEditAction = function RoleEditAction(id) {
         dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_EDIT_TYPE, resp.data));
         resolve(resp);
       })["catch"](function (err) {
-        if (err.response) dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+        if (err.response) {
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.failed)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_EDIT_TYPE));
+        }
+
         reject(err);
       });
     });
@@ -4274,10 +4299,15 @@ var RoleUpdateAction = function RoleUpdateAction(data, id, navigate) {
     return new Promise(function (resolve, reject) {
       Api.put("admin/usermanagement/role/edit/".concat(id), data).then(function (resp) {
         dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_UPDATE_TYPE, resp.data));
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifySuccess)(resp.data.message));
         navigate('/admin/usermanagement/role');
         resolve(resp);
       })["catch"](function (err) {
-        if (err.response) dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+        if (err.response) {
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.failed)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_UPDATE_TYPE));
+        }
+
         reject(err);
       });
     });
@@ -4288,12 +4318,16 @@ var RoleDeleteAction = function RoleDeleteAction(id) {
   return function (dispatch) {
     dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.init)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_DELETE_TYPE));
     return new Promise(function (resolve, reject) {
-      Api["delete"]('/admin/usermanagement/role/delete/' + id).then(function (resp) {
+      Api["delete"]("/admin/usermanagement/role/delete/".concat(id)).then(function (resp) {
         dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_DELETE_TYPE, resp.data));
         dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifySuccess)(resp.data.message));
         resolve(resp);
       })["catch"](function (err) {
-        if (err.response) dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+        if (err.response) {
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.failed)(_types__WEBPACK_IMPORTED_MODULE_0__.RoleActionType.ROLE_DELETE_TYPE));
+        }
+
         reject(err);
       });
     });
@@ -4392,6 +4426,249 @@ var RoleReducer = function RoleReducer() {
 
 /***/ }),
 
+/***/ "./resources/js/services/redux/usermanagement/user/UserAction.js":
+/*!***********************************************************************!*\
+  !*** ./resources/js/services/redux/usermanagement/user/UserAction.js ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "UserCreateAction": () => (/* binding */ UserCreateAction),
+/* harmony export */   "UserDeleteAction": () => (/* binding */ UserDeleteAction),
+/* harmony export */   "UserEditAction": () => (/* binding */ UserEditAction),
+/* harmony export */   "UserListAction": () => (/* binding */ UserListAction),
+/* harmony export */   "UserUpdateAction": () => (/* binding */ UserUpdateAction)
+/* harmony export */ });
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../types */ "./resources/js/services/types.js");
+/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../common */ "./resources/js/services/common.js");
+
+
+var UserListAction = function UserListAction(data) {
+  return function (dispatch) {
+    dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.init)(_types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_LIST_TYPE));
+    var query = data ? '?page=' + data.page + '&&perPage=' + data.perPage + '&&search=' + data.search : '';
+    return new Promise(function (resolve, reject) {
+      Api.get("/admin/usermanagement/user?".concat(query)).then(function (resp) {
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_LIST_TYPE, resp.data));
+        resolve(resp);
+      })["catch"](function (err) {
+        if (err.response) {
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.failed)(_types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_LIST_TYPE));
+        }
+
+        reject(err);
+      });
+    });
+  };
+}; //store user
+
+var UserCreateAction = function UserCreateAction(data, navigate) {
+  return function (dispatch) {
+    dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.init)(_types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_CREATE_TYPE));
+    return new Promise(function (resolve, reject) {
+      Api.post('/admin/usermanagement/user/store', data).then(function (resp) {
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_CREATE_TYPE, resp.data));
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifySuccess)(resp.data.message));
+        navigate('/admin/usermanagement/user');
+        resolve(resp);
+      })["catch"](function (err) {
+        if (err.response) {
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.failed)(_types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_CREATE_TYPE));
+        }
+
+        reject(err);
+      });
+    });
+  };
+}; //get user according to id
+
+var UserEditAction = function UserEditAction(id) {
+  return function (dispatch) {
+    dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.init)(_types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_EDIT_TYPE));
+    return new Promise(function (resolve, reject) {
+      Api.get("/admin/usermanagement/user/edit/".concat(id)).then(function (resp) {
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_EDIT_TYPE, resp.data));
+        resolve(resp);
+      })["catch"](function (err) {
+        if (err.response) {
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.failed)(_types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_EDIT_TYPE));
+        }
+
+        reject(err);
+      });
+    });
+  };
+}; //update user according to id
+
+var UserUpdateAction = function UserUpdateAction(data, id, navigate) {
+  return function (dispatch) {
+    dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.init)(_types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_UPDATE_TYPE));
+    return new Promise(function (resolve, reject) {
+      Api.put("/admin/usermanagement/user/edit/".concat(id), data).then(function (resp) {
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_UPDATE_TYPE, resp.data));
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifySuccess)(resp.data.message));
+        navigate('/admin/usermanagement/user');
+        resolve(resp);
+      })["catch"](function (err) {
+        if (err.response) {
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.failed)(_types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_UPDATE_TYPE));
+        }
+
+        reject(err);
+      });
+    });
+  };
+}; //delete user according to id
+
+var UserDeleteAction = function UserDeleteAction(id) {
+  return function (dispatch) {
+    dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.init)(_types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_DELETE_TYPE));
+    return new Promise(function (resolve, reject) {
+      Api["delete"]("/admin/usermanagement/user/delete/".concat(id)).then(function (resp) {
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_DELETE_TYPE, resp.data));
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifySuccess)(resp.data.message));
+        resolve(resp);
+      })["catch"](function (err) {
+        if (err.response) {
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.failed)(_types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_DELETE_TYPE));
+        }
+
+        reject(err);
+      });
+    });
+  };
+};
+
+/***/ }),
+
+/***/ "./resources/js/services/redux/usermanagement/user/UserReducer.js":
+/*!************************************************************************!*\
+  !*** ./resources/js/services/redux/usermanagement/user/UserReducer.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../types */ "./resources/js/services/types.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+var userState = {
+  userList: [],
+  user: {},
+  userListLoadingResponse: false,
+  userFormLoadingResponse: false,
+  userDeleteLoadingResponse: false
+};
+
+var UserReducer = function UserReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : userState;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_LIST_TYPE_INIT:
+      {
+        return _objectSpread(_objectSpread({}, state), {}, {
+          userListLoadingResponse: true
+        });
+      }
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_LIST_TYPE_SUCCESS:
+      {
+        return _objectSpread(_objectSpread({}, state), {}, {
+          userListLoadingResponse: false,
+          userList: action.payload.items.data
+        });
+      }
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_LIST_TYPE_FAILED:
+      {
+        return _objectSpread(_objectSpread({}, state), {}, {
+          userListLoadingResponse: false
+        });
+      }
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_CREATE_TYPE_INIT:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        userFormLoadingResponse: true
+      });
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_CREATE_TYPE_SUCCESS:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        userFormLoadingResponse: false
+      });
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_CREATE_TYPE_FAILED:
+      {
+        return _objectSpread(_objectSpread({}, state), {}, {
+          userFormLoadingResponse: false
+        });
+      }
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_EDIT_TYPE_SUCCESS:
+      {
+        return _objectSpread(_objectSpread({}, state), {}, {
+          user: action.payload.items
+        });
+      }
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_UPDATE_TYPE_INIT:
+      {
+        return _objectSpread(_objectSpread({}, state), {}, {
+          userFormLoadingResponse: true
+        });
+      }
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_UPDATE_TYPE_SUCCESS:
+      {
+        return _objectSpread(_objectSpread({}, state), {}, {
+          userFormLoadingResponse: false
+        });
+      }
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_UPDATE_TYPE_FAILED:
+      {
+        return _objectSpread(_objectSpread({}, state), {}, {
+          userFormLoadingResponse: false
+        });
+      }
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_DELETE_TYPE_INIT:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        userDeleteLoadingResponse: true
+      });
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_DELETE_TYPE_SUCCESS:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        userDeleteLoadingResponse: false,
+        userList: state.userList.filter(function (user) {
+          return user.id != action.payload.items.id;
+        })
+      });
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (UserReducer);
+
+/***/ }),
+
 /***/ "./resources/js/services/store/index.js":
 /*!**********************************************!*\
   !*** ./resources/js/services/store/index.js ***!
@@ -4429,21 +4706,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _redux_auth_AuthReducer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../redux/auth/AuthReducer */ "./resources/js/services/redux/auth/AuthReducer.js");
 /* harmony import */ var _redux_notify_NotifyReducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../redux/notify/NotifyReducer */ "./resources/js/services/redux/notify/NotifyReducer.js");
 /* harmony import */ var _redux_usermanagement_permission_PermissionReducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../redux/usermanagement/permission/PermissionReducer */ "./resources/js/services/redux/usermanagement/permission/PermissionReducer.js");
 /* harmony import */ var _redux_usermanagement_role_RoleReducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../redux/usermanagement/role/RoleReducer */ "./resources/js/services/redux/usermanagement/role/RoleReducer.js");
+/* harmony import */ var _redux_usermanagement_user_UserReducer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../redux/usermanagement/user/UserReducer */ "./resources/js/services/redux/usermanagement/user/UserReducer.js");
 
 
 
 
 
-var RootReducers = (0,redux__WEBPACK_IMPORTED_MODULE_4__.combineReducers)({
+
+var RootReducers = (0,redux__WEBPACK_IMPORTED_MODULE_5__.combineReducers)({
   authState: _redux_auth_AuthReducer__WEBPACK_IMPORTED_MODULE_0__["default"],
   notifyState: _redux_notify_NotifyReducer__WEBPACK_IMPORTED_MODULE_1__["default"],
   permissionState: _redux_usermanagement_permission_PermissionReducer__WEBPACK_IMPORTED_MODULE_2__["default"],
-  roleState: _redux_usermanagement_role_RoleReducer__WEBPACK_IMPORTED_MODULE_3__["default"]
+  roleState: _redux_usermanagement_role_RoleReducer__WEBPACK_IMPORTED_MODULE_3__["default"],
+  userState: _redux_usermanagement_user_UserReducer__WEBPACK_IMPORTED_MODULE_4__["default"]
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RootReducers);
 
@@ -4482,52 +4762,68 @@ var PermissionActionType = {
   PERMISSION_LIST_TYPE: "PERMISSION_LIST_TYPE",
   PERMISSION_LIST_TYPE_INIT: "PERMISSION_LIST_TYPE_INIT",
   PERMISSION_LIST_TYPE_SUCCESS: "PERMISSION_LIST_TYPE_SUCCESS",
+  PERMISSION_LIST_TYPE_FAILED: "PERMISSION_LIST_TYPE_FAILED",
   PERMISSION_CREATE_TYPE: "PERMISSION_CREATE_TYPE",
   PERMISSION_CREATE_TYPE_INIT: "PERMISSION_CREATE_TYPE_INIT",
   PERMISSION_CREATE_TYPE_SUCCESS: "PERMISSION_CREATE_TYPE_SUCCESS",
+  PERMISSION_CREATE_TYPE_FAILED: "PERMISSION_CREATE_TYPE_FAILED",
   PERMISSION_EDIT_TYPE: "PERMISSION_EDIT_TYPE",
   PERMISSION_EDIT_TYPE_SUCCESS: "PERMISSION_EDIT_TYPE_SUCCESS",
+  PERMISSION_EDIT_TYPE_FAILED: "PERMISSION_EDIT_TYPE_FAILED",
   PERMISSION_UPDATE_TYPE: "PERMISSION_UPDATE_TYPE",
   PERMISSION_UPDATE_TYPE_INIT: "PERMISSION_UPDATE_TYPE_INIT",
   PERMISSION_UPDATE_TYPE_SUCCESS: "PERMISSION_UPDATE_TYPE_SUCCESS",
+  PERMISSION_UPDATE_TYPE_FAILED: "PERMISSION_UPDATE_TYPE_FAILED",
   PERMISSION_DELETE_TYPE: "PERMISSION_DELETE_TYPE",
   PERMISSION_DELETE_TYPE_INIT: "PERMISSION_DELETE_TYPE_INIT",
   PERMISSION_DELETE_TYPE_SUCCESS: "PERMISSION_DELETE_TYPE_SUCCESS",
+  PERMISSION_DELETE_TYPE_FAILED: "PERMISSION_DELETE_TYPE_FAILED",
   PERMISSION_ROUTE_LIST_TYPE: "PERMISSION_ROUTE_LIST_TYPE",
   PERMISSION_ROUTE_LIST_TYPE_INIT: "PERMISSION_ROUTE_LIST_TYPE_INIT",
-  PERMISSION_ROUTE_LIST_TYPE_SUCCESS: "PERMISSION_ROUTE_LIST_TYPE_SUCCESS"
+  PERMISSION_ROUTE_LIST_TYPE_SUCCESS: "PERMISSION_ROUTE_LIST_TYPE_SUCCESS",
+  PERMISSION_ROUTE_LIST_TYPE_FAILED: "PERMISSION_ROUTE_LIST_TYPE_FAILED"
 };
 var RoleActionType = {
   ROLE_LIST_TYPE: "ROLE_LIST_TYPE",
   ROLE_LIST_TYPE_INIT: "ROLE_LIST_TYPE_INIT",
   ROLE_LIST_TYPE_SUCCESS: "ROLE_LIST_TYPE_SUCCESS",
+  ROLE_LIST_TYPE_FAILED: "ROLE_LIST_TYPE_FAILED",
   ROLE_CREATE_TYPE: "ROLE_CREATE_TYPE",
   ROLE_CREATE_TYPE_INIT: "ROLE_CREATE_TYPE_INIT",
   ROLE_CREATE_TYPE_SUCCESS: "ROLE_CREATE_TYPE_SUCCESS",
+  ROLE_CREATE_TYPE_FAILED: "ROLE_CREATE_TYPE_FAILED",
   ROLE_EDIT_TYPE: "ROLE_EDIT_TYPE",
   ROLE_EDIT_TYPE_SUCCESS: "ROLE_EDIT_TYPE_SUCCESS",
+  ROLE_EDIT_TYPE_FAILED: "ROLE_EDIT_TYPE_FAILED",
   ROLE_UPDATE_TYPE: "ROLE_UPDATE_TYPE",
   ROLE_UPDATE_TYPE_INIT: "ROLE_UPDATE_TYPE_INIT",
   ROLE_UPDATE_TYPE_SUCCESS: "ROLE_UPDATE_TYPE_SUCCESS",
+  ROLE_UPDATE_TYPE_FAILED: "ROLE_UPDATE_TYPE_FAILED",
   ROLE_DELETE_TYPE: "ROLE_DELETE_TYPE",
   ROLE_DELETE_TYPE_INIT: "ROLE_DELETE_TYPE_INIT",
-  ROLE_DELETE_TYPE_SUCCESS: "ROLE_DELETE_TYPE_SUCCESS"
+  ROLE_DELETE_TYPE_SUCCESS: "ROLE_DELETE_TYPE_SUCCESS",
+  ROLE_DELETE_TYPE_FAILED: "ROLE_DELETE_TYPE_FAILED"
 };
 var UserActionType = {
   USER_LIST_TYPE: "USER_LIST_TYPE",
   USER_LIST_TYPE_INIT: "USER_LIST_TYPE_INIT",
   USER_LIST_TYPE_SUCCESS: "USER_LIST_TYPE_SUCCESS",
+  USER_LIST_TYPE_FAILED: "USER_LIST_TYPE_FAILED",
   USER_CREATE_TYPE: "USER_CREATE_TYPE",
   USER_CREATE_TYPE_INIT: "USER_CREATE_TYPE_INIT",
   USER_CREATE_TYPE_SUCCESS: "USER_CREATE_TYPE_SUCCESS",
+  USER_CREATE_TYPE_FAILED: "USER_CREATE_TYPE_FAILED",
   USER_EDIT_TYPE: "USER_EDIT_TYPE",
   USER_EDIT_TYPE_SUCCESS: "USER_EDIT_TYPE_SUCCESS",
+  USER_EDIT_TYPE_FAILED: "USER_EDIT_TYPE_FAILED",
   USER_UPDATE_TYPE: "USER_UPDATE_TYPE",
   USER_UPDATE_TYPE_INIT: "USER_UPDATE_TYPE_INIT",
   USER_UPDATE_TYPE_SUCCESS: "USER_UPDATE_TYPE_SUCCESS",
+  USER_UPDATE_TYPE_FAILED: "USER_UPDATE_TYPE_FAILED",
   USER_DELETE_TYPE: "USER_DELETE_TYPE",
   USER_DELETE_TYPE_INIT: "USER_DELETE_TYPE_INIT",
-  USER_DELETE_TYPE_SUCCESS: "USER_DELETE_TYPE_SUCCESS"
+  USER_DELETE_TYPE_SUCCESS: "USER_DELETE_TYPE_SUCCESS",
+  USER_DELETE_TYPE_FAILED: "USER_DELETE_TYPE_FAILED"
 };
 
 /***/ }),
@@ -4636,6 +4932,32 @@ var Login = function Login(props) {
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Login);
+
+/***/ }),
+
+/***/ "./resources/js/views/admin/chatroom/index.js":
+/*!****************************************************!*\
+  !*** ./resources/js/views/admin/chatroom/index.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+var ChatRoom = function ChatRoom(props) {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.Fragment, {});
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ChatRoom);
 
 /***/ }),
 
@@ -4954,7 +5276,23 @@ var PermissionList = function PermissionList() {
     title: 'Name'
   }, {
     key: 'access_uri',
-    title: 'Access Uri'
+    title: 'Access Uri',
+    render: function render(row) {
+      var uriArr = row.access_uri.split(',');
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        className: "role-permissions-wrapper",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("ul", {
+          children: uriArr === null || uriArr === void 0 ? void 0 : uriArr.map(function (item, i) {
+            var itemArr = item.split('/');
+            var action = itemArr.length > 2 ? itemArr[2].toUpperCase() : 'VIEW';
+            var module = itemArr[1].toUpperCase();
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("li", {
+              children: item == 'api/admin/*' ? 'FULL CONTROL' : "".concat(action, " ").concat(module)
+            }, i);
+          })
+        })
+      });
+    }
   }, {
     key: 'created_at',
     title: 'Created At'
@@ -5392,12 +5730,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router */ "./node_modules/react-router/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _components_Form__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/Form */ "./resources/js/components/Form/index.js");
 /* harmony import */ var _services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/services/redux/usermanagement/role/RoleAction */ "./resources/js/services/redux/usermanagement/role/RoleAction.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _services_redux_usermanagement_user_UserAction__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/services/redux/usermanagement/user/UserAction */ "./resources/js/services/redux/usermanagement/user/UserAction.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -5419,6 +5766,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 var UserForm = function UserForm() {
   //ref
   var form = (0,react__WEBPACK_IMPORTED_MODULE_0__.useRef)(null);
@@ -5427,11 +5775,11 @@ var UserForm = function UserForm() {
       setFieldsValue = _useForm.setFieldsValue; //navigate
 
 
-  var navigate = (0,react_router__WEBPACK_IMPORTED_MODULE_5__.useNavigate)(); //dispatch
+  var navigate = (0,react_router__WEBPACK_IMPORTED_MODULE_6__.useNavigate)(); //dispatch
 
   var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)(); //params
 
-  var _useParams = (0,react_router__WEBPACK_IMPORTED_MODULE_5__.useParams)(),
+  var _useParams = (0,react_router__WEBPACK_IMPORTED_MODULE_6__.useParams)(),
       id = _useParams.id; //form mode
 
 
@@ -5445,7 +5793,12 @@ var UserForm = function UserForm() {
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
       _useState4 = _slicedToArray(_useState3, 2),
       search = _useState4[0],
-      setSearch = _useState4[1]; //selector
+      setSearch = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+      _useState6 = _slicedToArray(_useState5, 2),
+      selectedRoles = _useState6[0],
+      setSelectedRoles = _useState6[1]; //selector
 
 
   var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(function (state) {
@@ -5454,6 +5807,13 @@ var UserForm = function UserForm() {
       roleList = _useSelector.roleList,
       roleListLoadingResponse = _useSelector.roleListLoadingResponse;
 
+  var _useSelector2 = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(function (state) {
+    return state.userState;
+  }),
+      userFormLoadingResponse = _useSelector2.userFormLoadingResponse,
+      user = _useSelector2.user;
+
+  console.log(user);
   var perPage = 10;
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     dispatch((0,_services_redux_usermanagement_role_RoleAction__WEBPACK_IMPORTED_MODULE_3__.RoleListAction)({
@@ -5461,30 +5821,56 @@ var UserForm = function UserForm() {
       perPage: perPage,
       search: search
     }));
-  }, []); //user form
+    if (!isAddMode) dispatch((0,_services_redux_usermanagement_user_UserAction__WEBPACK_IMPORTED_MODULE_4__.UserEditAction)(id));
+  }, []);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    setSelectedRoles([]);
 
-  var userForm = function userForm(values) {};
+    if (!isAddMode) {
+      var roles = user === null || user === void 0 ? void 0 : user.roles;
+      roles === null || roles === void 0 ? void 0 : roles.map(function (item, i) {
+        setSelectedRoles(function (selectedRoles) {
+          return [].concat(_toConsumableArray(selectedRoles), [item.id]);
+        });
+      });
+      setFieldsValue(form, {
+        'name': user === null || user === void 0 ? void 0 : user.name,
+        'username': user === null || user === void 0 ? void 0 : user.username,
+        'email': user === null || user === void 0 ? void 0 : user.email,
+        'phone_no': user === null || user === void 0 ? void 0 : user.phone_no
+      });
+    }
+  }, [user]);
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    setFieldsValue(form, {
+      'roles': selectedRoles
+    });
+  }, [selectedRoles]); //user form
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+  var userForm = function userForm(values) {
+    isAddMode ? dispatch((0,_services_redux_usermanagement_user_UserAction__WEBPACK_IMPORTED_MODULE_4__.UserCreateAction)(values, navigate)) : dispatch((0,_services_redux_usermanagement_user_UserAction__WEBPACK_IMPORTED_MODULE_4__.UserUpdateAction)(values, id, navigate));
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
     className: "content-body",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
       className: "page-heading-wrapper",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
         className: "page-title-wrapper",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("h1", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("h1", {
           children: [!isAddMode ? 'Edit' : 'Create', " User"]
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
         className: "action-wrapper",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Link, {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_7__.Link, {
           to: "/admin/usermanagement/user",
           className: "btn-success",
           children: "Back"
         })
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
       className: "content-box-wrapper",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.Form, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.Form, {
         onFinish: userForm,
         form: form,
         name: "userForm",
@@ -5502,34 +5888,34 @@ var UserForm = function UserForm() {
           name: 'password',
           rules: 'required'
         }],
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
           className: "form-control",
           label: "Full Name",
           name: "name",
           placeholder: "Full Name"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
           className: "form-control",
           label: "Username",
           name: "username",
           placeholder: "Username"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
           className: "form-control",
           label: "Email",
           name: "email",
           placeholder: "Email",
           type: "email"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
           className: "form-control",
           label: "Phone No",
           name: "phone_no",
           placeholder: "Phone No"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
+        }), isAddMode && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.TextField, {
           className: "form-control",
           label: "Password",
           name: "password",
           placeholder: "Password",
           type: "password"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.Select, {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.Select, {
           multiple: true,
           name: "roles",
           className: "form-control",
@@ -5539,13 +5925,14 @@ var UserForm = function UserForm() {
           optionLabel: "name",
           options: roleList,
           searchAllow: true
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
           className: "form-group",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
             className: "form-label"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
             className: "form-input form-action",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.Button, {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_2__.Button, {
+              isLoading: userFormLoadingResponse,
               type: "submit",
               className: "btn-success",
               name: !isAddMode ? 'Update' : 'Create'
@@ -5574,9 +5961,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _components_Table__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/components/Table */ "./resources/js/components/Table/index.js");
+/* harmony import */ var react_icons_fa__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-icons/fa */ "./node_modules/react-icons/fa/index.esm.js");
+/* harmony import */ var _services_redux_usermanagement_user_UserAction__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @/services/redux/usermanagement/user/UserAction */ "./resources/js/services/redux/usermanagement/user/UserAction.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
 
 
 
@@ -5585,25 +5990,129 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var UserList = function UserList() {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+  //dispatch
+  var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
+  var perPage = 10; // state
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
+      _useState2 = _slicedToArray(_useState, 2),
+      currentPage = _useState2[0],
+      setCurrentPage = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+      _useState4 = _slicedToArray(_useState3, 2),
+      search = _useState4[0],
+      setSearch = _useState4[1]; //selector 
+
+
+  var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(function (state) {
+    return state.userState;
+  }),
+      userList = _useSelector.userList,
+      userListLoadingResponse = _useSelector.userListLoadingResponse;
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    dispatch((0,_services_redux_usermanagement_user_UserAction__WEBPACK_IMPORTED_MODULE_3__.UserListAction)({
+      page: currentPage,
+      perPage: perPage,
+      search: search
+    }));
+  }, [search]); //search
+
+  var handleSearch = function handleSearch(e) {
+    e.preventDefault();
+    var searchValue = Object.fromEntries(new FormData(e.target));
+    setSearch(searchValue.search);
+  }; //delete user
+
+
+  var handleUserDelete = function handleUserDelete(id) {
+    dispatch((0,_services_redux_usermanagement_user_UserAction__WEBPACK_IMPORTED_MODULE_3__.UserDeleteAction)(id));
+  };
+
+  var columns = [{
+    key: 'sno',
+    title: 'S.NO',
+    render: function render(row, index) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+        children: currentPage * perPage - (perPage - (index + 2 - 1))
+      });
+    }
+  }, {
+    key: 'name',
+    title: 'Full Name'
+  }, {
+    key: 'username',
+    title: 'Username'
+  }, {
+    key: 'email',
+    title: 'Email'
+  }, {
+    key: 'roles',
+    title: 'Roles',
+    render: function render(row) {
+      var _row$roles;
+
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+        className: "role-permissions-wrapper",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("ul", {
+          children: (_row$roles = row.roles) === null || _row$roles === void 0 ? void 0 : _row$roles.map(function (item, i) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("li", {
+              children: item.name
+            }, i);
+          })
+        })
+      });
+    }
+  }, {
+    key: 'created_at',
+    title: 'Created At'
+  }, {
+    key: 'action',
+    title: 'Action',
+    render: function render(row) {
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        className: "table-action-wrapper",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.Link, {
+          className: "table-edit-btn",
+          to: "/admin/usermanagement/user/edit/".concat(row.id),
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_6__.FaPen, {})
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("button", {
+          className: "table-delete-btn",
+          onClick: function onClick() {
+            return handleUserDelete(row.id);
+          },
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_6__.FaTrashAlt, {})
+        })]
+      });
+    }
+  }];
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     className: "content-body",
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
       className: "page-heading-wrapper",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "page-title-wrapper",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h1", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h1", {
           children: "User"
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
         className: "action-wrapper",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_3__.Link, {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_5__.Link, {
           to: "/admin/usermanagement/user/create",
           className: "btn-success",
           children: "Create"
         })
       })]
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      className: "content-box-wrapper"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      className: "content-box-wrapper",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components_Table__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        columns: columns,
+        rowsWrapperClass: "user-list-body",
+        rows: userList,
+        handleSearch: handleSearch,
+        loading: userListLoadingResponse
+      })
     })]
   });
 };

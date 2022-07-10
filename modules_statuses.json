@@ -1,4 +1,5 @@
 {
     "Usermanagement": true,
-    "Authentication": true
+    "Authentication": true,
+    "Chatroom": true
 }

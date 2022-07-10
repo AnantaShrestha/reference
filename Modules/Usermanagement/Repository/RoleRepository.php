@@ -35,7 +35,7 @@ class RoleRepository{
 		$role =$this->role->create([
 					'name' => $data['name']
 				]);
-		if($data['permissions']){
+		if(isset($data['permissions'])){
 			$role->permissions()->attach($data['permissions']);
 		}
 
@@ -63,7 +63,7 @@ class RoleRepository{
 		$role->update([
 			'name' =>$data['name']
 		]);
-		if($data['permissions']){
+		if(isset($data['permissions'])){
 			$role->permissions()->detach();
 			$role->permissions()->attach($data['permissions']);
 		}

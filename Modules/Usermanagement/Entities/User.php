@@ -5,6 +5,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 class User extends Authenticatable implements JwtSubject 
 {
+    protected $table = 'users';
     protected $fillable = [
         'name',
         'email',
@@ -45,5 +46,10 @@ class User extends Authenticatable implements JwtSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class,'user_roles', 'role_id', 'user_id');
     }
 }

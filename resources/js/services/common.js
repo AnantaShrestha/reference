@@ -12,6 +12,12 @@ export const success = (type,payload) =>{
 	}
 }
 
+export const failed = (type) =>{
+	return{
+		type:`${type}_FAILED`
+	}
+}
+
 export const notifySuccess = (payload) =>{
 	return{
 		type:NotificationActionType.NOTIFICATION_SUCCESS_MESSAGE,

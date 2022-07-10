@@ -9,7 +9,7 @@ const useForm = () =>{
 	const setFieldsValue = (form,fields)=>{
 		Object.entries(fields)?.map(([key,value],i)=>{
 			if(key){
-				if(typeof value =='object'){
+				if(value && typeof value =='object'){
 					let  counter= 0
 					let target = form.current.querySelectorAll(`input[name=${key}]`)
 					target && target.forEach((item)=>{

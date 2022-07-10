@@ -9,7 +9,7 @@ const useValidation = (validationRules) =>{
 			div.classList.add('validation-error-wrapper')
 		let span =document.createElement('span')
 			div.append(span)
-		if(!formData[fieldName] && fieldRules.includes('required')){
+		if(fieldElement && !formData[fieldName] && fieldRules.includes('required')){
 			span.innerHTML = `${fieldName} is required`
 			fieldElement.classList.add('invalid')
 			fieldElement.nextSibling && (fieldElement.nextSibling.remove())

@@ -24,7 +24,6 @@ trait PermissionRouteTrait{
 			$prefixArr=explode('/',$routePrefix);
 			$module =end($prefixArr);
 			$permissionRouteList[$module]=[
-				'all'=>$routePrefix.'/*',
 				'view'=>$routePrefix,
 			];
 			if(strpos($key,'store') !== false) $permissionActionRoute[$module]['create'] =$route->uri;

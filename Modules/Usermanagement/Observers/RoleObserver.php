@@ -7,8 +7,7 @@ class RoleObserver{
      * creating 
      */
     public function creating(Role $role){
-        $role->slug = \Str::slug($role->name);
-        $role->created_by=auth()->guard('api')->user()->id;
+        $role->created_by=currentUser()->id;
     }
 
     /**
@@ -16,8 +15,7 @@ class RoleObserver{
      * updating
     */
     public function updating(Role $role){
-        $role->slug = \Str::slug($role->name);
-        $role->updated_by=auth()->guard('api')->user()->id;
+        $role->updated_by=currentUser()->id;
     }
 
 

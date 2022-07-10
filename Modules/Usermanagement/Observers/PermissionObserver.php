@@ -7,8 +7,7 @@ class PermissionObserver{
      * creating 
      */
     public function creating(Permission $permission){
-    	$permission->slug = \Str::slug($permission->name);
-    	$permission->created_by=auth()->guard('api')->user()->id;
+    	$permission->created_by=currentUser()->id;
     }
 
     /**
@@ -16,8 +15,7 @@ class PermissionObserver{
      * updating
      */
     public function updating(Permission $permission){
-        $permission->slug = \Str::slug($permission->name);
-        $permission->updated_by=auth()->guard('api')->user()->id;
+        $permission->updated_by=currentUser()->id;
     }
 
 

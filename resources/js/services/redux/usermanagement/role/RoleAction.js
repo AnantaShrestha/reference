@@ -1,5 +1,5 @@
 import {RoleActionType} from '../../../types'
-import {init,success,notifyError,notifySuccess} from '../../../common'
+import {init,success,failed,notifyError,notifySuccess} from '../../../common'
 
 //list of role action
 export const RoleListAction = (data) => (dispatch) =>{
@@ -11,7 +11,10 @@ export const RoleListAction = (data) => (dispatch) =>{
 			dispatch(success(RoleActionType.ROLE_LIST_TYPE,resp.data))
 			resolve(resp)
 		}).catch(err=>{
-			if(err.response) dispatch(notifyError(err.response.data.message))
+			if(err.response){
+				dispatch(notifyError(err.response.data.message))
+				dispatch(failed(RoleActionType.ROLE_LIST_TYPE))
+			}
 			reject(err)
 		})
 	})
@@ -28,7 +31,11 @@ export const RoleCreateAction = (data,navigate) => (dispatch) =>{
 			navigate('/admin/usermanagement/role')
 			resolve(resp)
 		}).catch(err=>{
-			if(err.response) dispatch(notifyError(err.response.data.message))
+			if(err.response){
+				dispatch(notifyError(err.response.data.message))
+				dispatch(failed(RoleActionType.ROLE_CREATE_TYPE))
+
+			}
 			reject(err)
 		})
 	})
@@ -42,7 +49,10 @@ export const RoleEditAction = (id) => (dispatch) =>{
 			dispatch(success(RoleActionType.ROLE_EDIT_TYPE,resp.data))
 			resolve(resp)
 		}).catch(err=>{
-			if(err.response) dispatch(notifyError(err.response.data.message))
+			if(err.response){
+				dispatch(notifyError(err.response.data.message))
+				dispatch(failed(RoleActionType.ROLE_EDIT_TYPE))
+			}
 			reject(err)
 		})
 	})
@@ -55,10 +65,14 @@ export const RoleUpdateAction = (data,id,navigate) => (dispatch) =>{
 	return new Promise((resolve,reject)=>{
 		Api.put(`admin/usermanagement/role/edit/${id}`,data).then(resp=>{
 			dispatch(success(RoleActionType.ROLE_UPDATE_TYPE,resp.data))
+			dispatch(notifySuccess(resp.data.message))
 			navigate('/admin/usermanagement/role')
 			resolve(resp)
 		}).catch(err=>{
-			if(err.response) dispatch(notifyError(err.response.data.message))
+			if(err.response){
+				dispatch(notifyError(err.response.data.message))
+				dispatch(failed(RoleActionType.ROLE_UPDATE_TYPE))
+			}
 			reject(err)
 		})
 	})
@@ -69,12 +83,15 @@ export const RoleDeleteAction = (id) => (dispatch) =>{
 	dispatch(init(RoleActionType.ROLE_DELETE_TYPE))
 
 	return new Promise((resolve,reject)=>{
-		Api.delete('/admin/usermanagement/role/delete/'+id).then(resp=>{
+		Api.delete(`/admin/usermanagement/role/delete/${id}`).then(resp=>{
 			dispatch(success(RoleActionType.ROLE_DELETE_TYPE,resp.data))
 			dispatch(notifySuccess(resp.data.message))
 			resolve(resp)
 		}).catch(err=>{
-			if(err.response) dispatch(notifyError(err.response.data.message))
+			if(err.response){
+				dispatch(notifyError(err.response.data.message))
+				dispatch(failed(RoleActionType.ROLE_DELETE_TYPE))
+			}
 			reject(err)
 		})
 	})

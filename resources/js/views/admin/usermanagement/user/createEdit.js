@@ -4,6 +4,8 @@ import {useSelector,useDispatch} from 'react-redux'
 import { useNavigate } from "react-router"
 import {Form,Button,TextField,CheckBox,Select,useForm} from '@/components/Form'
 import {RoleListAction} from '@/services/redux/usermanagement/role/RoleAction'
+import {UserCreateAction,UserEditAction,UserUpdateAction} from '@/services/redux/usermanagement/user/UserAction'
+
 const UserForm = () =>{
     
     //ref
@@ -19,17 +21,44 @@ const UserForm = () =>{
     const isAddMode = id ? false : true
     const [currentPage,setCurrentPage] = useState(1)
     const [search,setSearch] = useState('')
-
+    const [selectedRoles,setSelectedRoles] = useState([])
     //selector
     const {roleList,roleListLoadingResponse} = useSelector((state)=>state.roleState)
+    const {userFormLoadingResponse,user} =useSelector((state) => state.userState)
+    console.log(user)
     const perPage = 10
 
     useEffect(()=>{
         dispatch(RoleListAction({page:currentPage,perPage:perPage,search:search}))
+        if(!isAddMode) dispatch(UserEditAction(id))
+
     },[])
+
+    useEffect(()=>{
+        setSelectedRoles([])
+        if(!isAddMode){
+            let roles = user?.roles
+            roles?.map((item,i)=>{
+                setSelectedRoles(selectedRoles=>[...selectedRoles,item.id])
+            })
+            setFieldsValue(form,{
+                'name' : user?.name,
+                'username':user?.username,
+                'email':user?.email,
+                'phone_no': user?.phone_no
+            })
+        }
+    },[user])
+
+    useEffect(()=>{
+        setFieldsValue(form,{
+            'roles' : selectedRoles,
+        })
+    },[selectedRoles])
     //user form
     const userForm = (values) =>{
-
+       isAddMode ? dispatch(UserCreateAction(values,navigate)) :
+                    dispatch(UserUpdateAction(values,id,navigate))
     }
 
     return(
@@ -92,13 +121,18 @@ const UserForm = () =>{
                             name="phone_no" 
                             placeholder="Phone No"
                     />
-                    <TextField 
-                            className="form-control"
-                            label="Password" 
-                            name="password" 
-                            placeholder="Password"
-                            type="password"
-                    />
+                    {
+                        isAddMode && (
+                                 <TextField 
+                                    className="form-control"
+                                    label="Password" 
+                                    name="password" 
+                                    placeholder="Password"
+                                    type="password"
+                                />
+                            )
+                    }
+                   
                     <Select
                         multiple={true}
                         name='roles'
@@ -114,7 +148,7 @@ const UserForm = () =>{
                     <div className="form-group">
                         <div className="form-label"></div>
                         <div className="form-input form-action">
-                            <Button   type="submit" className="btn-success" name={!isAddMode ? 'Update' : 'Create'} />
+                            <Button isLoading={userFormLoadingResponse}  type="submit" className="btn-success" name={!isAddMode ? 'Update' : 'Create'} />
                         </div>
                     </div>
                 </Form>

@@ -1,5 +1,6 @@
 import Login from '@/views/admin/auth/login'
 import Dashboard from '@/views/admin/dashboard'
+import ChatRoom from '@/views/admin/chatroom'
 import UsermanagementRoutes from './usermanagementRoutes'
 const routes=[
 	{
@@ -13,6 +14,12 @@ const routes=[
 		exact:true,
 		auth:true,
 		component:<Dashboard />
+	},
+	{
+		path:'/admin/chat',
+		exact:true,
+		auth:true,
+		component:<ChatRoom />
 	}
 ];
 export default [...routes,...UsermanagementRoutes]

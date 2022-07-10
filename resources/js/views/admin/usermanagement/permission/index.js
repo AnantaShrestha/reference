@@ -45,7 +45,27 @@ const PermissionList = () =>{
 		},
 		{
 			key:'access_uri',
-			title:'Access Uri'
+			title:'Access Uri',
+			render: (row) =>{
+				let uriArr = row.access_uri.split(',')
+				return(
+					<div className="role-permissions-wrapper">
+						<ul>
+							{
+								uriArr?.map((item,i)=>{
+									let itemArr =item.split('/')
+									let action = itemArr.length > 2 ? itemArr[2].toUpperCase() : 'VIEW'
+									let module = itemArr[1].toUpperCase()
+		
+									return(
+										<li key={i}>{item  == 'api/admin/*' ? 'FULL CONTROL' : (`${action} ${module}`)}</li>
+									)
+								})
+							}
+						</ul>
+					</div>
+				)
+			}
 		},
 		{
 			key:'created_at',

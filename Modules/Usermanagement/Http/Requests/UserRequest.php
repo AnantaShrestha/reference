@@ -14,16 +14,12 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            return [
                 'name'=>'required',
                 'username'=>'required|unique:users,username,'.$this->id,
                 'email'=> 'required|unique:users,email,'.$this->id,
-                'password'=>$this->id == null ? 'required|confirmed|min:6' : 'nullable|confirmed',
+                'password'=>$this->id == null ? 'required' : 'nullable',
                 'phone_no' =>'nullable' ,
                 'roles' => 'nullable',
-
-            ];
-
         ];
     }
 
