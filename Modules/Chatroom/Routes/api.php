@@ -13,3 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
+$router->prefix('admin/chat')->name('admin.chat.')->group(function() use($router){
+	$router->get('users',['as'=>'users','uses'=>'ChatController@users']);
+});

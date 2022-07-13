@@ -3187,6 +3187,37 @@ var Api = /*#__PURE__*/function () {
 
 /***/ }),
 
+/***/ "./resources/js/core/globalFunc.js":
+/*!*****************************************!*\
+  !*** ./resources/js/core/globalFunc.js ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "shortName": () => (/* binding */ shortName)
+/* harmony export */ });
+// get short name
+function shortName(data) {
+  var nameArr = data.split(' ');
+  var firstLetter = '';
+  var secondLetter = '';
+
+  if (nameArr[0]) {
+    firstLetter = nameArr.shift().charAt(0);
+  }
+
+  if (nameArr[1]) {
+    secondLetter = nameArr.pop().charAt(0);
+  }
+
+  var shortName = firstLetter + secondLetter;
+  return shortName.toUpperCase();
+}
+
+/***/ }),
+
 /***/ "./resources/js/layouts/includes/navList.js":
 /*!**************************************************!*\
   !*** ./resources/js/layouts/includes/navList.js ***!
@@ -3940,6 +3971,98 @@ var AuthReducer = function AuthReducer() {
 
 /***/ }),
 
+/***/ "./resources/js/services/redux/chat/ChatAction.js":
+/*!********************************************************!*\
+  !*** ./resources/js/services/redux/chat/ChatAction.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ChatUserListAction": () => (/* binding */ ChatUserListAction)
+/* harmony export */ });
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../types */ "./resources/js/services/types.js");
+/* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../common */ "./resources/js/services/common.js");
+
+ //get chat user list
+
+var ChatUserListAction = function ChatUserListAction(data) {
+  return function (dispatch) {
+    dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.init)(_types__WEBPACK_IMPORTED_MODULE_0__.ChatActionType.CHAT_USER_LIST_TYPE));
+    var query = data ? '?page=' + data.page + '&&perPage=' + data.perPage + '&&search=' + data.search : '';
+    return new Promise(function (resolve, reject) {
+      Api.get("/admin/chat/users?".concat(query)).then(function (resp) {
+        dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.success)(_types__WEBPACK_IMPORTED_MODULE_0__.ChatActionType.CHAT_USER_LIST_TYPE, resp.data));
+        resolve(resp);
+      })["catch"](function (err) {
+        if (err.response) {
+          dispatch((0,_common__WEBPACK_IMPORTED_MODULE_1__.notifyError)(err.response.data.message));
+          dispatch(failed(_types__WEBPACK_IMPORTED_MODULE_0__.ChatActionType.CHAT_USER_LIST_TYPE));
+        }
+
+        reject(err);
+      });
+    });
+  };
+};
+
+/***/ }),
+
+/***/ "./resources/js/services/redux/chat/ChatReducer.js":
+/*!*********************************************************!*\
+  !*** ./resources/js/services/redux/chat/ChatReducer.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../types */ "./resources/js/services/types.js");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+var chatState = {
+  chatUserList: [],
+  chatUserListLoadingResponse: false
+};
+
+var ChatReducer = function ChatReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : chatState;
+  var action = arguments.length > 1 ? arguments[1] : undefined;
+
+  switch (action.type) {
+    case _types__WEBPACK_IMPORTED_MODULE_0__.ChatActionType.CHAT_USER_LIST_TYPE_INIT:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        chatUserListLoadingResponse: true
+      });
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.ChatActionType.CHAT_USER_LIST_TYPE_SUCCESS:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        chatUserListLoadingResponse: false,
+        chatUserList: action.payload.items.data
+      });
+
+    case _types__WEBPACK_IMPORTED_MODULE_0__.ChatActionType.CHAT_USER_LIST_TYPE_FAILED:
+      return _objectSpread(_objectSpread({}, state), {}, {
+        chatUserListLoadingResponse: false
+      });
+
+    default:
+      return state;
+  }
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ChatReducer);
+
+/***/ }),
+
 /***/ "./resources/js/services/redux/notify/NotifyReducer.js":
 /*!*************************************************************!*\
   !*** ./resources/js/services/redux/notify/NotifyReducer.js ***!
@@ -4581,26 +4704,20 @@ var UserReducer = function UserReducer() {
 
   switch (action.type) {
     case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_LIST_TYPE_INIT:
-      {
-        return _objectSpread(_objectSpread({}, state), {}, {
-          userListLoadingResponse: true
-        });
-      }
+      return _objectSpread(_objectSpread({}, state), {}, {
+        userListLoadingResponse: true
+      });
 
     case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_LIST_TYPE_SUCCESS:
-      {
-        return _objectSpread(_objectSpread({}, state), {}, {
-          userListLoadingResponse: false,
-          userList: action.payload.items.data
-        });
-      }
+      return _objectSpread(_objectSpread({}, state), {}, {
+        userListLoadingResponse: false,
+        userList: action.payload.items.data
+      });
 
     case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_LIST_TYPE_FAILED:
-      {
-        return _objectSpread(_objectSpread({}, state), {}, {
-          userListLoadingResponse: false
-        });
-      }
+      return _objectSpread(_objectSpread({}, state), {}, {
+        userListLoadingResponse: false
+      });
 
     case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_CREATE_TYPE_INIT:
       return _objectSpread(_objectSpread({}, state), {}, {
@@ -4613,39 +4730,29 @@ var UserReducer = function UserReducer() {
       });
 
     case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_CREATE_TYPE_FAILED:
-      {
-        return _objectSpread(_objectSpread({}, state), {}, {
-          userFormLoadingResponse: false
-        });
-      }
+      return _objectSpread(_objectSpread({}, state), {}, {
+        userFormLoadingResponse: false
+      });
 
     case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_EDIT_TYPE_SUCCESS:
-      {
-        return _objectSpread(_objectSpread({}, state), {}, {
-          user: action.payload.items
-        });
-      }
+      return _objectSpread(_objectSpread({}, state), {}, {
+        user: action.payload.items
+      });
 
     case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_UPDATE_TYPE_INIT:
-      {
-        return _objectSpread(_objectSpread({}, state), {}, {
-          userFormLoadingResponse: true
-        });
-      }
+      return _objectSpread(_objectSpread({}, state), {}, {
+        userFormLoadingResponse: true
+      });
 
     case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_UPDATE_TYPE_SUCCESS:
-      {
-        return _objectSpread(_objectSpread({}, state), {}, {
-          userFormLoadingResponse: false
-        });
-      }
+      return _objectSpread(_objectSpread({}, state), {}, {
+        userFormLoadingResponse: false
+      });
 
     case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_UPDATE_TYPE_FAILED:
-      {
-        return _objectSpread(_objectSpread({}, state), {}, {
-          userFormLoadingResponse: false
-        });
-      }
+      return _objectSpread(_objectSpread({}, state), {}, {
+        userFormLoadingResponse: false
+      });
 
     case _types__WEBPACK_IMPORTED_MODULE_0__.UserActionType.USER_DELETE_TYPE_INIT:
       return _objectSpread(_objectSpread({}, state), {}, {
@@ -4706,24 +4813,27 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _redux_auth_AuthReducer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../redux/auth/AuthReducer */ "./resources/js/services/redux/auth/AuthReducer.js");
 /* harmony import */ var _redux_notify_NotifyReducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../redux/notify/NotifyReducer */ "./resources/js/services/redux/notify/NotifyReducer.js");
 /* harmony import */ var _redux_usermanagement_permission_PermissionReducer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../redux/usermanagement/permission/PermissionReducer */ "./resources/js/services/redux/usermanagement/permission/PermissionReducer.js");
 /* harmony import */ var _redux_usermanagement_role_RoleReducer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../redux/usermanagement/role/RoleReducer */ "./resources/js/services/redux/usermanagement/role/RoleReducer.js");
 /* harmony import */ var _redux_usermanagement_user_UserReducer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../redux/usermanagement/user/UserReducer */ "./resources/js/services/redux/usermanagement/user/UserReducer.js");
+/* harmony import */ var _redux_chat_ChatReducer__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../redux/chat/ChatReducer */ "./resources/js/services/redux/chat/ChatReducer.js");
 
 
 
 
 
 
-var RootReducers = (0,redux__WEBPACK_IMPORTED_MODULE_5__.combineReducers)({
+
+var RootReducers = (0,redux__WEBPACK_IMPORTED_MODULE_6__.combineReducers)({
   authState: _redux_auth_AuthReducer__WEBPACK_IMPORTED_MODULE_0__["default"],
   notifyState: _redux_notify_NotifyReducer__WEBPACK_IMPORTED_MODULE_1__["default"],
   permissionState: _redux_usermanagement_permission_PermissionReducer__WEBPACK_IMPORTED_MODULE_2__["default"],
   roleState: _redux_usermanagement_role_RoleReducer__WEBPACK_IMPORTED_MODULE_3__["default"],
-  userState: _redux_usermanagement_user_UserReducer__WEBPACK_IMPORTED_MODULE_4__["default"]
+  userState: _redux_usermanagement_user_UserReducer__WEBPACK_IMPORTED_MODULE_4__["default"],
+  chatState: _redux_chat_ChatReducer__WEBPACK_IMPORTED_MODULE_5__["default"]
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (RootReducers);
 
@@ -4739,6 +4849,7 @@ var RootReducers = (0,redux__WEBPACK_IMPORTED_MODULE_5__.combineReducers)({
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AuthActionType": () => (/* binding */ AuthActionType),
+/* harmony export */   "ChatActionType": () => (/* binding */ ChatActionType),
 /* harmony export */   "NotificationActionType": () => (/* binding */ NotificationActionType),
 /* harmony export */   "PermissionActionType": () => (/* binding */ PermissionActionType),
 /* harmony export */   "RoleActionType": () => (/* binding */ RoleActionType),
@@ -4824,6 +4935,12 @@ var UserActionType = {
   USER_DELETE_TYPE_INIT: "USER_DELETE_TYPE_INIT",
   USER_DELETE_TYPE_SUCCESS: "USER_DELETE_TYPE_SUCCESS",
   USER_DELETE_TYPE_FAILED: "USER_DELETE_TYPE_FAILED"
+};
+var ChatActionType = {
+  CHAT_USER_LIST_TYPE: "CHAT_USER_LIST_TYPE",
+  CHAT_USER_LIST_TYPE_INIT: "CHAT_USER_LIST_TYPE_INIT",
+  CHAT_USER_LIST_TYPE_SUCCESS: "CHAT_USER_LIST_TYPE_SUCCESS",
+  CHAT_USER_LIST_TYPE_FAILED: "CHAT_USER_LIST_TYPE_FAILED"
 };
 
 /***/ }),
@@ -4948,16 +5065,182 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _core_globalFunc__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @/core/globalFunc */ "./resources/js/core/globalFunc.js");
+/* harmony import */ var _message__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./message */ "./resources/js/views/admin/chatroom/message.js");
+/* harmony import */ var _services_redux_chat_ChatAction__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @/services/redux/chat/ChatAction */ "./resources/js/services/redux/chat/ChatAction.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
 
 
 
 
 var ChatRoom = function ChatRoom(props) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.Fragment, {});
+  var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
+  var perPage = 10; // state
+
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(1),
+      _useState2 = _slicedToArray(_useState, 2),
+      currentPage = _useState2[0],
+      setCurrentPage = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(''),
+      _useState4 = _slicedToArray(_useState3, 2),
+      search = _useState4[0],
+      setSearch = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(null),
+      _useState6 = _slicedToArray(_useState5, 2),
+      selectedUser = _useState6[0],
+      setSelectedUser = _useState6[1]; //selector
+
+
+  var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(function (state) {
+    return state.chatState;
+  }),
+      chatUserList = _useSelector.chatUserList,
+      chatUserListLoadingResponse = _useSelector.chatUserListLoadingResponse;
+
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    dispatch((0,_services_redux_chat_ChatAction__WEBPACK_IMPORTED_MODULE_4__.ChatUserListAction)({
+      page: currentPage,
+      perPage: perPage,
+      search: search
+    }));
+  }, [search]);
+
+  var selectUser = function selectUser(userId) {
+    var filterUser = chatUserList.filter(function (user) {
+      return user.id == userId;
+    });
+    setSelectedUser(filterUser[0]);
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+    className: "chat-room-wrapper",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+      className: "chat-row-message-wrapper",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_message__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        selectedUser: selectedUser
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+      className: "chat-row-list-wrapper",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+        className: "chat-list-items",
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+          className: "chat-heading",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h2", {
+            children: "Users"
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+          className: "chat-user-list",
+          children: chatUserList && (chatUserList === null || chatUserList === void 0 ? void 0 : chatUserList.map(function (user, i) {
+            return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+              className: "chat-user-item",
+              onClick: function onClick() {
+                return selectUser(user.id);
+              },
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
+                className: "chat-user-image",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+                  children: (0,_core_globalFunc__WEBPACK_IMPORTED_MODULE_2__.shortName)(user.name)
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                  className: "chat-online-status "
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+                className: "chat-user-name",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("span", {
+                  children: user.name
+                })
+              })]
+            }, i);
+          }))
+        })]
+      })
+    })]
+  });
 };
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ChatRoom);
+
+/***/ }),
+
+/***/ "./resources/js/views/admin/chatroom/message.js":
+/*!******************************************************!*\
+  !*** ./resources/js/views/admin/chatroom/message.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components_Form__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @/components/Form */ "./resources/js/components/Form/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+
+
+var Message = function Message(_ref) {
+  var selectedUser = _ref.selectedUser;
+  console.log(selectedUser);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+    children: selectedUser ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "chat-person",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
+          children: selectedUser.name
+        })
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "chat-person-list"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "chat-person-form",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("form", {
+          method: "post",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+            className: "chat-person-form-wrapper",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("textarea", {
+              name: "message",
+              className: "message-box",
+              placeholder: "Send Message..."
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(_components_Form__WEBPACK_IMPORTED_MODULE_1__.Button, {
+              type: "submit",
+              className: "btn-success",
+              name: "Send"
+            })]
+          })
+        })
+      })]
+    }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "not-chat-selected",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("h2", {
+        children: "No Person Selected"
+      })
+    })
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Message);
 
 /***/ }),
 
@@ -72305,7 +72588,7 @@ function _objectWithoutPropertiesLoose(source, excluded) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"_from":"axios@^0.21","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"range","registry":true,"raw":"axios@^0.21","name":"axios","escapedName":"axios","rawSpec":"^0.21","saveSpec":null,"fetchSpec":"^0.21"},"_requiredBy":["#DEV:/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_shasum":"c67b90dc0568e5c1cf2b0b858c43ba28e2eda575","_spec":"axios@^0.21","_where":"E:\\\\wampp\\\\www\\\\demo\\\\reactlaravel","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundleDependencies":false,"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"deprecated":false,"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
+module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"Promise based HTTP client for the browser and node.js","main":"index.js","scripts":{"test":"grunt test","start":"node ./sandbox/server.js","build":"NODE_ENV=production grunt build","preversion":"npm test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json","postversion":"git push && git push --tags","examples":"node ./examples/server.js","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","fix":"eslint --fix lib/**/*.js"},"repository":{"type":"git","url":"https://github.com/axios/axios.git"},"keywords":["xhr","http","ajax","promise","node"],"author":"Matt Zabriskie","license":"MIT","bugs":{"url":"https://github.com/axios/axios/issues"},"homepage":"https://axios-http.com","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"jsdelivr":"dist/axios.min.js","unpkg":"dist/axios.min.js","typings":"./index.d.ts","dependencies":{"follow-redirects":"^1.14.0"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}]}');
 
 /***/ })
 

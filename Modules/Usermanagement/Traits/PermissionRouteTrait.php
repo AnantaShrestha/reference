@@ -30,7 +30,10 @@ trait PermissionRouteTrait{
 			if(strpos($key,'edit') !== false) $permissionActionRoute[$module]['edit'] =$route->uri;
 			if(strpos($key,'delete') !== false) $permissionActionRoute[$module]['delete'] =$route->uri;
 		}
-		return array_merge_recursive($permissionRouteList,$permissionActionRoute);
+		$finalRoute=array_merge_recursive($permissionRouteList,$permissionActionRoute);
+		unset($finalRoute['chat']);
+
+		return $finalRoute;
 	}
 	/**
 	 * @return filter routes

@@ -84,4 +84,21 @@ class UserRepository{
 
 		return $user;
 	}
+
+
+	/**
+	 * @return
+	 * chat user list
+	 */
+	public function getChatUserPagination(array $data = null){
+		$users =$this->user
+					->where('id','!=',currentUser()->id)
+					->select('id','name','username','email')
+					->orderBy('name','asc');
+		if($data['search'])
+			$users=$users->where('name','LIKE','%'.$data['search'].'%');
+		$users=$users->paginate($data['perPage'],['*'],'page',$data['page']);
+		
+		return $users;
+	}
 }
