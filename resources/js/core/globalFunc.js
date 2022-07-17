@@ -13,3 +13,5 @@ export function shortName(data){
 	return shortName.toUpperCase()
 	
 }
+
+//get current user

@@ -1,10 +1,9 @@
 const app = require("express")();
 const http = require("http").createServer(app);
-const PORT = 8080;
+const PORT = 5000;
 const io = require("socket.io")(http, {
   cors: {
     origin: "*",
-    methods: ["GET", "POST"],
   },
 });
 
@@ -16,3 +15,13 @@ app.use((req, res, next) => {
 http.listen(PORT, () => {
   console.log(`listening on *:${PORT}`);
 });
+
+var users= []
+io.on('connection',function(socket){
+   socket.on("userConnected", function (userId) {
+        users[userId] = socket.id;
+        io.emit('updateUserStatus', users);
+        console.log("user connected "+ userId);
+    });
+
+})

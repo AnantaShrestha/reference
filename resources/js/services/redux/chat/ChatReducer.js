@@ -2,7 +2,11 @@ import {ChatActionType} from '../../types'
 
 const chatState = {
 	chatUserList:[],
+	chatUserMessage:[],
+	chatUserMessageStoreResponse : {},
 	chatUserListLoadingResponse:false,
+	chatUserMessageLoadingResponse:false,
+	chatUserMessageStoreLoadingResponse :false
 }
 
 
@@ -26,6 +30,36 @@ const ChatReducer = (state=chatState,action) =>{
 			return{
 				...state,
 				chatUserListLoadingResponse:false
+			}
+		case ChatActionType.CHAT_USER_GET_MESSAGE_TYPE_INIT:
+			return{
+				chatUserMessageLoadingResponse:true
+			}
+		case ChatActionType.CHAT_USER_GET_MESSAGE_TYPE_SUCCESS:
+			return{
+				chatUserMessageLoadingResponse:false,
+				chatUserMessage:action.payload.items
+			}
+		case ChatActionType.CHAT_USER_GET_MESSAGE_TYPE_FAILED:
+			return{
+				chatUserMessageLoadingResponse:false,
+
+			}
+		case ChatActionType.CHAT_USER_STORE_MESSAGE_TYPE_INIT:
+			return{
+				chatUserMessageStoreLoadingResponse:true,
+				chatUserMessageStoreResponse:{}
+				
+			}
+		case ChatActionType.CHAT_USER_STORE_MESSAGE_TYPE_SUCCESS:
+			return{
+				chatUserMessageStoreLoadingResponse:false,
+				chatUserMessageStoreResponse:action.payload.items
+			}
+		case ChatActionType.CHAT_USER_STORE_MESSAGE_TYPE_FAILED:
+			return{
+				chatUserMessageStoreLoadingResponse:false,
+				chatUserMessageStoreResponse:{}
 			}
 		default:
 			return state

@@ -5,18 +5,29 @@ import FlashMessage from '@/components/FlashMessage'
 import SideBar from './includes/sideBar'
 import TopHeader from './includes/topheader'
 const PrivateLayout = ({children}) =>{
+	const {isLoggedIn} =useSelector(
+		(state) => state.authState
+	);
+	
 	return (
 		<>
-		<FlashMessage />
-		<div className="body-compose">
-			<SideBar />
-			<div className="main-content-wrapper">
-				<TopHeader />
-				<div className="content-box">
-					{children}
-				</div>
-			</div>
-		</div>
+			<FlashMessage />
+
+			{
+				isLoggedIn ? (
+					<div className="body-compose">
+						<SideBar />
+						<div className="main-content-wrapper">
+							<TopHeader />
+							<div className="content-box">
+								{children}
+							</div>
+						</div>
+					</div>
+				) : (
+					<Navigate to="/admin/login"></Navigate>
+				)
+			}
 		</>
 	);
 }

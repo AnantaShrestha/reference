@@ -47,6 +47,7 @@ const AuthReducer = (state=newAuth,action)=>{
 			]  =`Bearer ${action.payload.items.access_token}`;
 			return{
 				...state,
+				isLoggedIn:true,
 				loginLoadingResponse:false,
 				user:action.payload.items.user,
 			}

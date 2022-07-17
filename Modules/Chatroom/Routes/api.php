@@ -14,5 +14,7 @@ use Illuminate\Http\Request;
 */
 
 $router->prefix('admin/chat')->name('admin.chat.')->group(function() use($router){
+	$router->get('user/message/{id}',['as'=>'user.message','uses'=>'MessageController@index']);
+	$router->post('user/message/store',['as'=>"user.message.store",'uses'=>'MessageController@store']);
 	$router->get('users',['as'=>'users','uses'=>'ChatController@users']);
 });

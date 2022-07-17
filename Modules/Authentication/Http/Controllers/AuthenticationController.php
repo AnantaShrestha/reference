@@ -36,7 +36,7 @@ class AuthenticationController extends Controller
      * @return create token
      */
     protected function createNewToken($token){
-        $user=auth('api')->user();
+        $user=auth()->guard('api')->user();
         $data=[
             'access_token' => $token,
             'token_type' => 'bearer',
@@ -50,7 +50,7 @@ class AuthenticationController extends Controller
      * @return logout user
      */
     public function logout(){
-        $user=auth('api')->user();
+        $user=auth()->guard('api')->user();
         auth()->logout();
         return $this->apiResponse->responseSuccess(NULL,'Logout Successfully',SUCCESS);
     }

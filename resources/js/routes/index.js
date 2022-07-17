@@ -5,6 +5,7 @@ import PrivateLayout from '@/layouts/privateLayout'
 import PublicLayout from '@/layouts/publicLayout'
 const EndPoints = () =>{
 	return (
+		<>
 		<Router>
 			<>
 				<Routes>
@@ -19,6 +20,7 @@ const EndPoints = () =>{
 				</Routes>
 			</>
 		</Router>
+		</>
 	);
 }
 export default EndPoints

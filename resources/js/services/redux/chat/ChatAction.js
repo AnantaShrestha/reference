@@ -19,3 +19,41 @@ export const ChatUserListAction = (data) => (dispatch) =>{
 		})
 	})
 }
+
+//get user message
+export const ChatUserGetMessageAction = (receiverId) =>(dispatch) =>{
+	dispatch(init(ChatActionType.CHAT_USER_GET_MESSAGE_TYPE))
+
+	return new Promise((resolve,reject)=>{
+		Api.get(`/admin/chat/user/message/${receiverId}`).then(resp=>{
+			dispatch(success(ChatActionType.CHAT_USER_GET_MESSAGE_TYPE,resp.data))
+			resolve(resp)
+		}).catch(err=>{
+			if(err.response){
+				dispatch(notifyError(err.response.data.message))
+				dispatch(failed(ChatActionType.CHAT_USER_LIST_TYPE))
+			} 
+			reject(err)
+		})
+	})
+}
+
+
+//store message
+export const ChatUserStoreMessageAction = (body) => (dispatch) =>{
+	dispatch(init(ChatActionType.CHAT_USER_STORE_MESSAGE_TYPE))
+
+	return new Promise((resolve,reject)=>{
+		Api.post('/admin/chat/user/message/store',body).then(resp=>{
+			dispatch(success(ChatActionType.CHAT_USER_STORE_MESSAGE_TYPE,resp.data))
+			resolve(resp)
+		}).catch(err=>{
+			if(err.response){
+				dispatch(notifyError(err.response.data.message))
+				dispatch(failed(ChatActionType.CHAT_USER_LIST_TYPE))
+			} 
+			reject(err)
+		})
+	})
+
+}
